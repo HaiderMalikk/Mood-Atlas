@@ -45,12 +45,12 @@ THE CONST IS JUST IN PLACE FOR ERROR FIXING THE MATH IS NOT WRONG
   
   // Recursive function to fetch all pages
   async function fetchAllPlaces(url, params, allPlaces = [], pageCount = 0) {
-    const pageLimit = 5;
+    const pageLimit = 1;
     try {
       // Fetch the current page of results
       const response = await axios.get(url, { params, headers: { 'X-Requested-With': 'XMLHttpRequest' } });
       const data = response.data; // data contains places, nextpage token etc
-      console.log(response);
+      console.log("Response From Google Places API: ",response);
 
       // results is the places parts
       if (data.results && data.results.length > 0) {

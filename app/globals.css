@@ -272,15 +272,34 @@ html, body {
   border-radius: 5px;
 }
 
+.map-error-message{
+  font: 1rem / 3rem 'Inter', sans-serif;
+  font-size: 3em;
+  color: red;
+  text-align: center;
+  padding-top: 10rem;
+
+}
 
 /* Loading spinner container */
 /* Container to hold both spinner and text */
 .loading-container {
+  font: 1rem / 1.5rem 'Inter', sans-serif;
   display: flex;
   align-items: center; /* Vertically center the spinner and text */
   justify-content: center; /* Optional: centers the whole container */
   gap: 10px; /* Space between spinner and text */
 }
+
+.loading-container-map {
+  font: 1rem / 1.5rem 'Inter', sans-serif;
+  padding-top: 10rem;
+  display: flex;
+  align-items: center; /* Vertically center the spinner and text */
+  justify-content: center; /* Optional: centers the whole container */
+  gap: 10px; /* Space between spinner and text */
+}
+
 
 .loading-spinner {
   border: 8px solid transparent; /* Transparent border */

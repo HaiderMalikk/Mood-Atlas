@@ -31,7 +31,6 @@ const WelcomePage = () => {
   }, []);
 
   // State for user coordinates (user location)
-
   // State for displaying processed data, currently a placeholder
   const [processedData, setProcessedData] = useState({
     title: "Start by Filling the inputs and then click submit",
@@ -194,7 +193,17 @@ const WelcomePage = () => {
       </div>
       {/* Right Side */}
       <div className="right">
-        <Map userCoordinates={userCoordinates} />
+      {!userCoordinates ? (
+        <div className="map-container">
+           <div className="loading-container-map">
+              <div className="loading-spinner"></div> {/* Spinner */}
+              <span style={{ marginLeft: "10px" }}>Loading Map...</span> {/* Text next to the spinner */}
+            </div>
+        </div>
+        ) : (
+          {/* only loading the map when the user coordinates are available */},
+          <Map userCoordinates={userCoordinates} /> 
+        )}
         <LocationCard
           title={processedData.title}
           description={processedData.address}
