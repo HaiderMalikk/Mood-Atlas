@@ -1,6 +1,6 @@
 'use client';
 import { fetchPlaces } from "./places_fetch";
-import { fetchFlaskData } from "./llm_call";
+import { fetchLLMresponse } from "./llm_call";
 
 export async function processInputs(mood, hobby, activity, userCoordinates, radius) {
   console.log(`Starting place processing for mood: ${mood}, hobby: ${hobby}, activity: ${activity}, coordinates: Lat: ${userCoordinates.lat}, Lng: ${userCoordinates.lng}, radius: ${radius}`);
@@ -13,19 +13,19 @@ export async function processInputs(mood, hobby, activity, userCoordinates, radi
     if (places && places.length > 0) {
       console.log("Starting place processing");
 
-      // Fetch data from the Flask API using the helper function
-      console.log("Sending places to Flask call file for response");
-      const flaskResult = await fetchFlaskData(places, mood, hobby, activity);
+      // Fetch data from the Open AI API using the helper function
+      console.log("Sending places to Open AI for response");
+      const LLMResult = await fetchLLMresponse(places, mood, hobby, activity);
 
-      if (flaskResult !== null) {
-        console.log("Extracting place number from Flask response");
+      if (LLMResult !== null) {
+        console.log("Extracting place number from LLM response");
       } else {
-        console.warn("No valid response from Flask.");
+        console.warn("No valid response from LLM.");
       }
 
-      const finalPlaceNumber = flaskResult["place number from llm"];
+      const finalPlaceNumber = LLMResult["place number from llm"];
       console.log(`Final place number: ${finalPlaceNumber}`);
-      const matchpercentage = flaskResult["matchscore"];
+      const matchpercentage = LLMResult["matchscore"];
 
       console.log("Getting place details");
 

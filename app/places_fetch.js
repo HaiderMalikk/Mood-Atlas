@@ -38,7 +38,7 @@ THE CONST IS JUST IN PLACE FOR ERROR FIXING THE MATH IS NOT WRONG
   
   const newoffset = calculateOffset(lat, baseOffset);
   // creating vars for lan and lng offsets
-  const latoffset = newoffset.latOffset; // lat is of with no ofset its ofset will corisponf to radius with no addition of constant
+  const latoffset = newoffset.latOffset; // lat is of with no ofset its ofset will corispond to radius with no addition of constant
   const lngoffset = newoffset.lngOffset;
 
   console.log(`Serching with new offsets: Lat offset: ${latoffset} Lng offset: ${lngoffset}`);

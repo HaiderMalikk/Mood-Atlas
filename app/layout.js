@@ -16,10 +16,10 @@ const Layout = ({ children }) => {
   return (
     <html>
       <head>
-        <script
+        {/* <script
           defer
           src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places&callback=YOUR_CALLBACK_NAME`}
-        ></script>
+        ></script> */}
       </head>
       <body>
         <header className='header-links'>
