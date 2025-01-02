@@ -31,7 +31,7 @@ const Layout = ({ children }) => {
                 style={{ margin: 0, cursor: 'pointer' }}
                 onClick={toggleAboutPopup}
               >
-                <img src="https://img.icons8.com/?size=100&id=82450&format=png&color=000000" alt="About" style={{ width: '20px', height: '20px', marginTop: '-10px', marginBottom: '-5px', marginRight: '5px'}} />
+                <img src="https://img.icons8.com/?size=100&id=82450&format=png&color=000000" alt="About" style={{width: '20px', height: '20px', marginTop: '-10px', marginBottom: '-5px', marginRight: '5px'}} />
                 About
               </h1>
             </div>

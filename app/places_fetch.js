@@ -7,59 +7,15 @@ export async function fetchPlaces(userCoordinates, radius) {
 
 
 // ! THIS IS THE GREATEST THING IN THE WORLD I CALL IT THE RADIAL OFSET ENGINE
-// basically it accounts for the fact that google maps api only lets you have 60 places per request whcich dose not cover the whole radius of user input
+/* 
+it basiacly hops around in the users radius and gets locations from different directions at different points (coordinates)
+this measn we arent just getting all our places focused on the users location but also in the users radius
 
-    // Offset value for directional search (in degrees) this dictates how much we move N, S, E, W by from the original point (usercoordinates)
-  // lat and lng are sensitive to direction a small cahnge can move you by a significant amount hence keep it small
-  // NOTE!
-  /* 
-  EX:
-    An offset of 0.001 latitude is ~111 meters everywhere.
-    An offset of 0.001 longitude is ~111 meters at the equator but decreases as you move towards the poles.
-  */
-  /* 
-  hence we must find a function that accounts for this i.e if the user has a small or large lat meaning there closer or further from the equator
-  then there closer or further from the poles and hence we must account for this when making the offset
-  the ofset will be the same ammount in the north and south i.e no matter the lat it doeent effect the distance of N, S movement
-  but it dose the E, W movement so we need to account for this
-  So we will return a modified offset for lng (e,w) while the base offset is for N,S (north,south) will be the same as the lat offset
+PLZ READ ABOUT THIS IN THE READ ME FILE SECTION: RADIAL OFSET ENGINE
+THE CONST IS JUST IN PLACE FOR ERROR FIXING THE MATH IS NOT WRONG 
 
-  SOL:
-  lng offset = base offset * Math.cos(latInRadians) 
-  this factor scales the longitude offset appropriately. 
-  At the equator (latitude = 0), cos(0) = 1, so the longitude offset is equal to the base offset. 
-  At the poles (latitude = ±90), cos(±90) = 0, so the longitude offset becomes 0, 
-  which is correct since longitude lines converge at the poles.
-
-  - BASE OFFSET:
-  as for the base ofset a this determines how much we move our cordinates N, S, E, W i.e how many meters we move in any direction
-  once we move to that new point we serch for places in that area again so this is important to account for
-  a large ofset means we move more and get unique places, moving a small amout means our radius converges and incetcepts with the last search
-  this means less places and hence less unique places
-
-  BUT the user have a radius option and so we cannot increase the radius too much or we will get too many places outside our radius
-  to figure this out i will use the ofset conversion to meters and then use that along with the radius to make a function like so
-  NOTE: like mentioned before the ofset for lng is different from that for lat but since the function will account for this
-  we can start off with a base ofset that is the ofset we want fot thr lat and the function will adjust it for the lng accordingly
-
-  1 ofset i.e lat + 1 = lat + 111 km, 0.1 = 11km, 0.001 = 0.111km
-  so if we want n km added to our lat then we can use the following formula
-  km to add = ofset * 111km
-  so if i want 11km i do 0.111 * 111km = 11km
-  solving for ofset we get: ofset = km to add / 111km
-  the km to add should be the radius ! DONE!
-  so for a radius of 25km our ofset should be 25km / 111km = 0.2252
-
-  as we move towards the poles 1 deg of lng is shorter than at the equator hence the lng ofset will be smaller than the lat ofset in most cases
-  i.e the change in lng covers a smaller distance than the same change in lng at the equator
-
-  BUT ! BUT ! theres a problem in real life the new lng ofset is a bit off from real life 
-  hence i must add to either the radius or add a constant
-  so after testing with online maps and radius i came up with a constant to add to the base ofset calculations 
-  watch the yt vid for how i came up with everything
-  Everything so far is as follows:
-  */
- const baseOffset = radius / 111;
+*/
+ const baseOffset = radius / 111.32;
  console.log(`Base offset for radius: ${radius} is: ${baseOffset}`);
  
  function calculateOffset(userLat, baseOffset) {
@@ -82,19 +38,21 @@ export async function fetchPlaces(userCoordinates, radius) {
   
   const newoffset = calculateOffset(lat, baseOffset);
   // creating vars for lan and lng offsets
-  const range_filler_constant_lng = 0.15; // adding a constant to the lng offset to make it complete
   const latoffset = newoffset.latOffset; // lat is of with no ofset its ofset will corisponf to radius with no addition of constant
-  const lngoffset = newoffset.lngOffset + range_filler_constant_lng;
+  const lngoffset = newoffset.lngOffset;
 
   console.log(`Serching with new offsets: Lat offset: ${latoffset} Lng offset: ${lngoffset}`);
   
   // Recursive function to fetch all pages
-  async function fetchAllPlaces(url, params, allPlaces = []) {
+  async function fetchAllPlaces(url, params, allPlaces = [], pageCount = 0) {
+    const pageLimit = 5;
     try {
       // Fetch the current page of results
       const response = await axios.get(url, { params, headers: { 'X-Requested-With': 'XMLHttpRequest' } });
-      const data = response.data;
+      const data = response.data; // data contains places, nextpage token etc
+      console.log(response);
 
+      // results is the places parts
       if (data.results && data.results.length > 0) {
         console.log(`Fetched ${data.results.length} places`);
       } else {
@@ -104,6 +62,13 @@ export async function fetchPlaces(userCoordinates, radius) {
       // Append current page results to the list of all places
       allPlaces = allPlaces.concat(data.results);
 
+      pageCount++;
+
+      if (pageCount >= pageLimit) {
+        console.log(`Page limit of ${pageLimit} reached. Stopping recursive fetch.`);
+        return allPlaces;
+      }
+
       // Check for the next page token
       if (data.next_page_token) {
         console.log('Next page token found. Waiting before fetching the next page...');
@@ -112,7 +77,7 @@ export async function fetchPlaces(userCoordinates, radius) {
 
         // Fetch the next page recursively
         params.pagetoken = data.next_page_token;
-        return fetchAllPlaces(url, params, allPlaces);
+        return fetchAllPlaces(url, params, allPlaces, pageCount);
       }
 
       // Return the accumulated list of places
@@ -155,7 +120,7 @@ export async function fetchPlaces(userCoordinates, radius) {
     };
 
     return fetchAllPlaces(
-      'https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/nearbysearch/json',
+      '/api/fetchPlaces',
       params
     );
   }
