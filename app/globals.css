@@ -3,19 +3,405 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --orange: #FFA500; /* signiture color */
+  --backgroundcolor: #272c30; /* dark gray background */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Header styles */
+.header-links {
+  font: 1rem / 1.5rem 'Inter', sans-serif;
+  height: 45px; /* Fixed height for the header */
+  flex-shrink: 0; /* Prevent header from shrinking */
+  background-color: var(--backgroundcolor); /* Dark gray background */
+  color: white;
+  justify-content: space-between;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.header-title {
+  font: 1.5rem / 1.5rem 'Inter', sans-serif;
+  text-align: center; 
+  margin-top: -20px;
+  margin-bottom: 50px;
+}
+
+.header h1 {
+  font-size: 2.5rem;  
+  font-weight: bold;  
+}
+
+.about-header {
+  text-align: left; 
+  margin: 10px;     
+  transition: background-color 0.3s ease;
+}
+.github-header {
+  text-align: right; 
+  margin: 10px 0;   
+  transition: background-color 0.3s ease;  
+}
+
+.button {
+  background-color: #272c30; /* button */
+  color: white;
+  padding: 5px 10px; /* Smaller padding */
+  font-size: 14px; /* Smaller text */
+  border: none;
+  border-radius: 3px; /* Smaller rounded corners */
+  cursor: pointer;
+  text-align: center;
+}
+
+.button:hover {
+  background-color: var(--orange); 
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 50px; /* Space between input containers */
+}
+
+.input-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-title {
+  font: 1rem / 1.5rem 'Inter', sans-serif;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 5px; /* Add space between title and input box */
+  color: var(--backgroundcolor); /* Dark gray color for text */
+}
+
+.input-box {
+  padding: 10px;
+  font-size: 1rem;
+  border: 2px solid var(--backgroundcolor); /* Light gray border */
+  border-radius: 5px;
+  width: 100%; /* Full width of container */
+  box-sizing: border-box; /* Include padding in width calculation */
+}
+
+.input-box:focus {
+  outline: none;
+  border-color: var(--orange); /* Highlighted border on focus */
+  box-shadow: 0 0 5px rgba(130, 121, 121, 0.8); /* Subtle  glow */
+}
+
+.input-box::placeholder {
+  color: #ccc; /* Light gray color for the placeholder text */
+  font-style: italic; /* Optional: italicize the placeholder */
+}
+
+.slider-container {
+  padding-left: 25%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  width: 300px; /* Set a fixed width for the slider */
+  height: 0px;
+}
+
+.slider-title {
+  font: 1rem / 1.5rem 'Inter', sans-serif;
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--backgroundcolor);
+  margin: 0;
+}
+
+.slider {
+  height: 8px;
+  flex: 1; /* Takes up the remaining space */
+  background: #ccc;
+  border-radius: 5px;
+  appearance: none;
+  outline: none;
+  margin: 0 auto; /* Center it horizontally */
+}
+
+.slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background-color: var(--backgroundcolor);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background-color: var(--backgroundcolor);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.radius-value {
+  font: 1rem / 1.5rem 'Inter', sans-serif;
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--backgroundcolor);
+}
+
+.button-container {
+  margin-top: 50px;
+  text-align: center; /* Center-align the button */
+}
+
+.submit-button {
+  margin-top: 25px;
+  font: 1rem / 1.5rem 'Inter', sans-serif;
+  padding: 20px 80px;
+  font-size: 30px;
+  font-weight: bold;
+  color: white;
+  background-color: var(--backgroundcolor); 
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+  background-color: var(--orange); /*on hover */
+}
+
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden; /* Prevent unwanted scrolling */
+  box-sizing: border-box; /* Include padding and border in dimensions */
+}
+
+
+.container {
+  display: flex;
+  flex-wrap: wrap; /* Allows wrapping for smaller screens */
+  justify-content: space-between; /* Ensure sections are spaced */
+  height: 100vh; /* Full screen height */
+}
+
+.left {
+  flex: 1; /* Take up one part of the container */
+  text-align: center; /* Center content inside */
+  padding-left: 20px; /* Add padding for content inside */
+
+}
+
+.right {
+  flex: 1; /* Maintain equal space distribution */
+  display: flex; /* Flexbox layout */
+  align-items: center; /* Vertically center the content */
+  justify-content: center; /* Horizontally center the content */
+  padding: 20px; /* Add consistent padding */
+  box-sizing: border-box; /* Ensure padding doesn't affect dimensions */
+  padding-right: 0px;
+  padding-top: 0px;
+  padding-bottom: 75px;
+  margin-right: -30px;
+  margin-top: -10px;
+}
+
+
+.map-container {
+  flex-grow: 1; /* Allows the map to fill all available space */
+  width: calc(100% - 10px); /* Adjust width with padding */
+  height: calc(100% - 20px); /* Adjust height with padding */
+  margin: 10px; /* Adds equal padding around the map */
+  position: relative; /* Required for Google Maps */
+  border: 5px solid #000000; /* Add a solid border with black color */
+  border-radius: 5px; /* Optional: add rounded corners to the border */
+}
+
+.map-overlay-box {
+  position: absolute;
+  bottom: 40px;
+  left: 56%;
+  width: 50%;
+  max-width: 500px;
+  height: 210px;
+  background-color: #272c30; /* Solid black background */
+  color: white;
+  padding: 10px 20px;
+  box-sizing: border-box;
+  border-radius: 8px;
+  z-index: 10;
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.3);
+  display: flex; /* Make it a flex container */
+  align-items: center; /* Vertically center content */
+  justify-content: space-between; /* Space between text and image */
+}
+
+.map-content {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center; /* Align content vertically in the center */
+}
+
+.map-text {
+  flex: 1; /* Allow text to take up remaining space */
+  margin-right: 10px; /* Add spacing between text and image */
+}
+
+.map-title {
+  font: 1rem / 1.5rem 'Inter', sans-serif;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 5px; /* Reduce the gap between title and description */
+}
+
+.map-description {
+  font: 1rem / 1.5rem 'Inter', sans-serif;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.map-image {
+  width: 180px;
+  height: 180px;
+  object-fit: contain;
+  border-radius: 5px;
+}
+
+
+/* Loading spinner container */
+/* Container to hold both spinner and text */
+.loading-container {
+  display: flex;
+  align-items: center; /* Vertically center the spinner and text */
+  justify-content: center; /* Optional: centers the whole container */
+  gap: 10px; /* Space between spinner and text */
+}
+
+.loading-spinner {
+  border: 8px solid transparent; /* Transparent border */
+  border-top: 8px solid var(--orange); /* Color of the spinner */
+  border-radius: 50%; /* Make it a circle */
+  width: 40px; /* Set width to 40px for a reasonable spinner size */
+  height: 40px; /* Same height for a circular spinner */
+  animation: spin 1s linear infinite; /* Smooth spinning animation */
+}
+
+/* Animation keyframe for spinning */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg); /* Start rotation */
+  }
+  100% {
+    transform: rotate(360deg); /* Complete one full rotation */
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+/* About Card Overlay */
+.about-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7); /* Dimmed background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.about-card {
+  font: 1rem / 1.5rem 'Inter', sans-serif;
+  background: white;
+  padding: 30px;
+  width: 80%;
+  max-width: 800px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  z-index: 1;
+}
+
+.close-button {
+  font: 1rem / 1.5rem 'Inter', sans-serif;
+  padding: 10px 20px;
+  background-color: var(--orange);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+/* Popup Overlay */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Popup Content */
+.popup-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 80%;
+  max-width: 600px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.popup-content h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.popup-content p {
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+
+.popup-content img {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  margin-bottom: 15px;
+}
+
+.close-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #272c30;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  background-color: var(--orange);
+  transition: background-color 0.3s ease;
+}
+
+
+@media (max-width: 768px) {
+  .header-links {
+    flex-direction: column; /* Stack header items vertically */
+    padding: 10px; /* Adjust padding for small screens */
+  }
+  .header-title h1 {
+    font-size: 2rem; /* Adjust font size for smaller screens */
+  }
 }
