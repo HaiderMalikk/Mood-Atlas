@@ -1,3 +1,3 @@
 - todo:
 find new user location getter
-- reminders has rest
+- remove all concsole logs keepeing only ones with no vars 

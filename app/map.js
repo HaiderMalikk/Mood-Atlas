@@ -2,6 +2,10 @@
 
 import React, { useEffect, useRef } from 'react';
 import { Loader } from '@googlemaps/js-api-loader';
+/* 
+api comunication with js-api-loader so no api request is made here
+*/
+
 
 export function Map({userCoordinates}) {
   const mapRef = useRef(null); // use ref so that the map can render itself
