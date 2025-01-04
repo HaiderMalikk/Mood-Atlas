@@ -55,6 +55,8 @@ MOOD-ATLAS/
 - this recommendations places object contain info about the places that can be parsed and extracted for things like location, address etc.
 - below are some ex snippets of code detailing important parts of the process (NOT COMPLETE CODE JUST PARTS OF IT WITH PSEUDOCODE)
 
+---
+
 **Ex Data, Google Places API's nearby search returns us a json file that looks something like this, this data is needed for the website to work**
 
 ```json
@@ -79,6 +81,8 @@ MOOD-ATLAS/
   {"etc etc this is not the exact format of the json file but it is something like this"}
 }
 ```
+
+---
 
 **Open AI APi calls**
 
