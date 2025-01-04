@@ -35,7 +35,7 @@ const WelcomePage = () => {
   // State for displaying processed data, currently a placeholder
   const [processedData, setProcessedData] = useState({
     title: "Start by Filling the inputs and then click submit",
-    address: "",
+    address: "Please wait a while Submitting, processing can take upto 10 seconds",
     picture: "",
     reviews: "",
     matchscore: null,
@@ -97,6 +97,7 @@ const WelcomePage = () => {
     setHobby("");
     setRadius(25);
     setUserCoordinates(userCoordinates);
+    setGonow(false);
     setProcessedData({
       title: "Start by Filling the inputs and then click submit",
       address: "",

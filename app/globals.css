@@ -256,7 +256,7 @@ html, body {
 }
 
 .map-title-starting {
-  font: 1rem / 1.5rem 'Inter', sans-serif;
+  font: 1rem / 1rem 'Inter', sans-serif;
   font-size: 15px;
   font-weight: bold;
   margin-bottom: 5px; /* Reduce the gap between title and description */

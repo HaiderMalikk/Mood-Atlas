@@ -11,12 +11,16 @@ export function LocationCard({ title, description, picture, reviews, matchscore 
   if (matchscore){
     formattedscore = 'Match Score: ' + matchscore;
   }
+  let message = "";
+  if (title !== "Start by Filling the inputs and then click submit") {
+    message = "I Would Recommend:";
+  }
   return (
     <div>
       <div className="map-overlay-box">
         <div className="map-content">
           <div className="map-text">
-            <h4 className='map-title-starting'>I Would Recommend:</h4>
+            <h4 className='map-title-starting'>{message}</h4>
             <h2 className="map-title">{title}</h2>
             <p className="map-description">{description}</p>
             <p className="map-description">{formattedreviews}</p>
