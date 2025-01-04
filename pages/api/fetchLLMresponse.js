@@ -13,25 +13,35 @@ export default async function handler(req, res) {
   try {
     // Construct the prompt
     const prompt = `
-        You are a place selector your job is to find a place for the attributes of the user which are as follows:
-            Users Mood: ${mood}, Users Hobbies: ${hobby}, Users Activities: ${activity}
-            IF ANY OF THE ATTRIBUTES ARE N/A THAT MEANS THE USER DID NOT PROVIDE IT, ASSUME IT'S THE SAME IF ITS BLANK
-            IF YOU ARE NOT GIVEN ONE OR MORE OF THE ABOVE ATTRIBUTES RETURN YOU BEST GUESS EVEN IF YOU ARE GIVEN NO ATTRIBUTES
+       You are a place recommender designed to suggest the best place based on a user's preferences. Your task is to find the ideal place for a user based on the following attributes:
 
-            You are also given a key value pair as follows: Key = place number and Value = name = 'place name', type = 'place types'. 
-            Your job is too find the best place for the user based on the given attributes.
-            you do this by looking at value. You can use the places name along with types which has a list of the type of the place.
-            each type is separated by a comma in the types String.
-            When you find the right place return its key your answer must be a single integer in the range of keys given in the problem.
-            then you must return a match score from 0-100 which is the score of how well the place matches the user.
-            this score must be separated by a commas 
-            the final answer will be in the following format: key, match_score
-            
-            YOU MUST RETURN A VALID INTEGER AND NOTHING ELSE, EVEN IF THE USER HAS NO MATCHING PLACE RETURN YOU BEST GUESS. ALSO RETURN A MATCH PERCENTAGE EVEN IF ITS 0
-            JUST FOR YOU REFERENCE THE MAX NUMBER YOU CAN GOTO IS THE MAX NUMBER OF OBJECTS IN THE LIST OF PLACES WHICH IS: ${newplaces.length}
-            
-            Here is the list of places:
-            ${newplaces}
+      - User's Mood: ${mood}
+      - User's Hobbies: ${hobby}
+      - User's Activities: ${activity}
+
+      If any of these attributes are missing or not provided, assume they are blank or N/A and make your best guess. If the user provides no attributes, rely on your own judgment to suggest a place.
+
+      You are given a dictionary where the key is the place number and the value contains information about each place in the following format:
+
+      - 'name': The name of the place (e.g., 'Central Park')
+      - 'type': A comma-separated list of types (e.g., 'park, outdoor, nature')
+
+      Your goal is to suggest the best place based on the user's attributes. To do this, you should analyze the place's name and types. The types provide information about what kind of place it is (e.g., park, restaurant, museum). Match these attributes with the user's provided mood, hobbies, and activities to find the most suitable place.
+
+      After identifying the best place, return the following:
+      1. The place's key (index number).
+      2. A match score, which is a percentage (0-100), indicating how well the place matches the user's preferences.
+
+      Your answer should be in the format:
+      key, match_score
+      YOUR ANSWER MUST BE IN THIS FORMAT NO MATTER WHAT.
+      YOU MUST RETURN A VALID INTEGER AND NOTHING ELSE, EVEN IF THE USER HAS NO MATCHING PLACE RETURN YOU BEST GUESS. 
+      SAME FOR THE MATCH SCORE.
+
+      For reference, you can only choose a place from the given list. The maximum possible index value is ${Object.keys(newplaces).length}.
+
+      Here is the list of places with their details:
+      ${newplaces}
     `;
 
     // Make the API call to OpenAI

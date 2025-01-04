@@ -65,7 +65,7 @@ MOOD-ATLAS/
 
 ```json
 {
-  "name": "Residence Inn Toronto",
+   "name": "Residence Inn Toronto",
   {
   "place_id" : "ChIJRQoITNc0K4gRMBoATwPJLYs",
         "plus_code" : 
@@ -76,6 +76,11 @@ MOOD-ATLAS/
     "lat" : 43.64192569999999,
     "lng" : -79.3894923
   },
+  "types" : [ "hotel", "establishment" ],
+  "opening_hours":
+  {
+    "open_now" : true,
+  }
   "photos" : 
   [
     {

@@ -31,6 +31,7 @@ export async function fetchLLMresponse(places, mood, hobby, activity, gonow) {
   console.log("Sending request to backend API for OpenAI response");
   const newplaces = formatPlaces(places, gonow);
   console.log("New places formatted to be sent to OPEN AI backend:", newplaces);
+  console.log("length of new places:", Object.keys(newplaces).length);
 
   try {
     const response = await axios.get('/api/fetchLLMresponse', {
