@@ -16,6 +16,7 @@ export function LocationCard({ title, description, picture, reviews, matchscore 
       <div className="map-overlay-box">
         <div className="map-content">
           <div className="map-text">
+            <h4 className='map-title-starting'>I Would Recommend:</h4>
             <h2 className="map-title">{title}</h2>
             <p className="map-description">{description}</p>
             <p className="map-description">{formattedreviews}</p>

@@ -2,7 +2,7 @@
 import { fetchPlaces } from "./places_fetch";
 import { fetchLLMresponse } from "./llm_call";
 
-export async function processInputs(mood, hobby, activity, userCoordinates, radius) {
+export async function processInputs(mood, hobby, activity, userCoordinates, radius, gonow) {
   console.log(`Starting place processing for mood: ${mood}, hobby: ${hobby}, activity: ${activity}, coordinates: Lat: ${userCoordinates.lat}, Lng: ${userCoordinates.lng}, radius: ${radius}`);
   try {
     // Fetch places using the helper function
@@ -15,7 +15,7 @@ export async function processInputs(mood, hobby, activity, userCoordinates, radi
 
       // Fetch data from the Open AI API using the helper function
       console.log("Sending places to Open AI for response");
-      const LLMResult = await fetchLLMresponse(places, mood, hobby, activity);
+      const LLMResult = await fetchLLMresponse(places, mood, hobby, activity, gonow);
 
       if (LLMResult !== null) {
         console.log("Extracting place number from LLM response");

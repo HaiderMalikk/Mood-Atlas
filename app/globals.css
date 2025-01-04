@@ -97,7 +97,7 @@
 }
 
 .slider-container {
-  padding-left: 25%;
+  padding-left: 10%;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -142,6 +142,8 @@
 }
 
 .radius-value {
+  white-space: nowrap;
+  display: inline-block;
   font: 1rem / 1.5rem 'Inter', sans-serif;
   font-size: 1rem;
   font-weight: bold;
@@ -251,6 +253,14 @@ html, body {
 .map-text {
   flex: 1; /* Allow text to take up remaining space */
   margin-right: 10px; /* Add spacing between text and image */
+}
+
+.map-title-starting {
+  font: 1rem / 1.5rem 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: bold;
+  margin-bottom: 5px; /* Reduce the gap between title and description */
+  font-style: italic;
 }
 
 .map-title {
@@ -413,6 +423,46 @@ html, body {
 .close-button:hover {
   background-color: var(--orange);
   transition: background-color 0.3s ease;
+}
+
+/* Style for the checkbox container */
+.go-now-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-left: 20px;
+  white-space: nowrap;  /* Prevents text wrapping */
+  text-align: left;
+}
+
+/* Hide the default checkbox */
+.go-now-checkbox {
+  display: none;
+}
+
+/* Custom checkbox styling */
+.custom-checkmark {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--backgroundcolor);
+  border-radius: 50%; /* Makes it circular */
+  display: inline-block;
+  position: relative;
+}
+
+/* Dot inside when checked */
+.go-now-checkbox:checked + .custom-checkmark::after {
+  content: "";
+  width: 10px;
+  height: 10px;
+  background-color: #272c30;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 

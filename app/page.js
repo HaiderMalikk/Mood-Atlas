@@ -12,6 +12,7 @@ const WelcomePage = () => {
   const [hobby, setHobby] = useState("");
   const [radius, setRadius] = useState(25);
   const [userCoordinates, setUserCoordinates] = useState(null);
+  const [gonow, setGonow] = useState(false);
 
   // Fetch user coordinates only once at the start hence why the mount is empty '[]'
   useEffect(() => {
@@ -62,7 +63,7 @@ const WelcomePage = () => {
     console.log("All inputs filled Sending Processing Request");
   
     // Process inputs
-    const result = await processInputs(mood, hobby, activity, userCoordinates, radius);
+    const result = await processInputs(mood, hobby, activity, userCoordinates, radius, gonow);
     console.log("Processed Place data received at main page:", result);
   
     // Set the processed data to state
@@ -169,6 +170,20 @@ const WelcomePage = () => {
               onChange={(e) => setRadius(e.target.value)}
             />
             <span className="radius-value">{radius} km</span>
+          {/* Checkbox for 'Go Now' */}
+          <label htmlFor="go-now-checkbox" className="go-now-label">
+            <input
+              type="checkbox"
+              id="go-now-checkbox"
+              className="go-now-checkbox"
+              checked={gonow}
+              onChange={() => setGonow(!gonow)}
+            />
+            <span className="custom-checkmark"></span> 
+            Going Now? 
+            <br />
+            We can filter out closed places
+          </label>
           </div>
         </div>
         <div className="button-container">

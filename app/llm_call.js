@@ -1,28 +1,35 @@
 'use client';
 import axios from 'axios';
 
-export function formatPlaces(places) {
-  // Remove the first element
-  places.shift();
+export function formatPlaces(places, gonow) {
+  console.log("Formatting places Go now is: ", gonow);
 
-  // Initialize a counter and formatted object
-  let counter = 0;
+  // Initialize formatted object
   const formattedPlaces = {};
 
   // Iterate through the places array and format the data
-  places.forEach((place) => {
-    const name = place.name; // Extract the name property
-    formattedPlaces[counter] = name; // Add to formatted object
-    counter++;
+  places.forEach((place, index) => {
+    // Check if we need to filter by "open_now"
+    if (gonow && (!place.opening_hours || !place.opening_hours.open_now)) {
+      return; // Skip this place if it's not open and gonow is true
+    }
+
+    // Extract relevant details
+    const name = place.name;
+    const types = place.types ? place.types.join(", ") : "Unknown"; // Join types into a single string
+
+    // Store in formatted object with the same key
+    formattedPlaces[index] = { name, types };
   });
 
   return formattedPlaces;
 }
 
 
-export async function fetchLLMresponse(places, mood, hobby, activity) {
+
+export async function fetchLLMresponse(places, mood, hobby, activity, gonow) {
   console.log("Sending request to backend API for OpenAI response");
-  const newplaces = formatPlaces(places);
+  const newplaces = formatPlaces(places, gonow);
   console.log("New places formatted to be sent to OPEN AI backend:", newplaces);
 
   try {
