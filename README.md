@@ -168,7 +168,6 @@ After gathering all places:
    - Formula for longitude scaling:
      - $\text{lngScale} = \cos\left(\frac{\text{lat} \cdot \pi}{180}\right)$, Where the $\text{lat}$ is multiplied by $\left(\frac{\pi}{180}\right)$ to convert it to radiants
    - Adjusted longitude offset:
-   - Adjusted longitude offset:
      - $\text{lngOffset} = \text{latOffset} \cdot \text{lngScale}$
    - **Example:**
      - At the equator \( $\text{lat} = 0^\circ$ \), \( $\text{lngScale} = 1$ \), so:
@@ -215,6 +214,8 @@ New Coordinates:
 - Lng: \( -79.3832 + 0.081 = -79.3022 \)
 
 **East Move:** \( 43.6532, -79.3022 \)
+
+**And So on For All Other Directions Including The Original Coordinates**
 
 ---
 
