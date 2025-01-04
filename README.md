@@ -41,7 +41,11 @@ MOOD-ATLAS/
 │   ├── page.js                   # the main page of the app with all the formatting and order of components i.e where the map, location etc are and there logic along with the user inputs 
 │   ├── places_fetch              # contains the logic for fetching places from google places api to give to the processor for it to forward it to flask
 │   ├── places_processing.js      # this is where all the inputs are received and where we get the places send it to flask get its response and returns the result to the page
-│   └── user_location.js          # This is where we get the user's initial location from ipapi api.
+│   └── user_location.js    
+├── pages/api                     # main application api endpoints (basically the server files that make api requests for us so we dont have too do it in the frondend, avoids CORS issues)
+│   ├── fetchLLMresponse.js       # this is where the api call is made to the Open AI Api to get final answer 
+│   ├── fetchPlaces.js            # contains the api endpoint for fetching places from google places api
+│   └── fetchUserCoordinates.js   # contains the api endpoint for getting the user's initial location from ipapi 
 ├── assets/                       # contains all the static assets like images etc                 # pom file containing all the imports for the springboot project                
 ├── utils/                        # contains utility functions used throughout the app like global colors etc
 ├── next.config.mjs               # contains the configuration for the next.js app like trusted domains etc
@@ -167,7 +171,7 @@ After gathering all places:
    - Adjusted longitude offset:
      - $\text{lngOffset} = \text{latOffset} \cdot \text{lngScale}$
    - **Example:**
-     - At the equator \( \text{lat} = 0^\circ \), \( \text{lngScale} = 1 \), so:
+     - At the equator \( $\text{lat} = 0^\circ$ \), \( $\text{lngScale} = 1$ \), so:
        - $\text{lngOffset} = \text{latOffset}$
      - At 43.6532° (Toronto):
        - $\text{lngScale} = \cos\left(\frac{43.6532 \times \pi}{180}\right) \approx 0.722$
