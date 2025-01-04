@@ -427,10 +427,11 @@ html, body {
 
 /* Style for the checkbox container */
 .go-now-label {
+  font: 1rem / 1.2rem 'Inter', sans-serif;
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 16px;
+  font-size: 15px;
   cursor: pointer;
   margin-left: 20px;
   white-space: nowrap;  /* Prevents text wrapping */
