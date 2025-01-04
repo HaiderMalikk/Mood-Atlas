@@ -1,14 +1,13 @@
 'use client';
 
 export async function fetchUserCoordinates () {
-    try {
-        const response = await fetch('https://ipapi.co/json/');
-        const data = await response.json();  // data returns an object in json with, lat and lng as keys
-        console.log('Got user coordinates:');
-        // getting lat and lng to return
-        return { lat: data.latitude, lng: data.longitude }
+try {
+        const response = await fetch('/api/fetchUserCoordinates');
+        const data = await response.json();
+        console.log("User coordinates:", data);
+        return data;
     } catch (error) {
-        console.error('Error fetching user coordinates:', error, "setting default to toronto");
+        console.error("Error fetching user coordinates:", error);
         return null;
     }
 }

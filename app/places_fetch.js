@@ -15,7 +15,7 @@ PLZ READ ABOUT THIS IN THE READ ME FILE SECTION: RADIAL OFSET ENGINE
 THE CONST IS JUST IN PLACE FOR ERROR FIXING THE MATH IS NOT WRONG 
 
 */
- const baseOffset = radius / 111.32;
+ const baseOffset = (radius / 2) / 111.32; // devide by 2 see readme for why
  console.log(`Base offset for radius: ${radius} is: ${baseOffset}`);
  
  function calculateOffset(userLat, baseOffset) {
@@ -115,7 +115,7 @@ THE CONST IS JUST IN PLACE FOR ERROR FIXING THE MATH IS NOT WRONG
     // Initial request parameters
     const params = {
       location: `${adjustedLat},${adjustedLng}`,
-      radius: radius * 1000, // Convert to meters
+      radius: (radius * 1000) / 2, // Convert to meters and divide by 2 for half the radius see read me for more info
       key: apiKey,
     };
 

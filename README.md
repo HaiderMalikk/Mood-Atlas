@@ -114,159 +114,183 @@ return formatanswer(result)
 
 ---
 
-### Overview
-The Google Maps API's **nearby search** search's locations near the user, split into **20 places per page**. At each page we move outwards fetching more and more places near the user. But it would take a long time to reach the places at the ned of the users radius, this is because we would need to go though many pages to get there and takes too much time. So i found a way to overcome this limitation using my **radial offset engine** this was created to fetch places all over the users radius by searching at nearby offsets in **North (N)**, **South (S)**, **East (E)**, and **West (W)** directions. So it basically searches **n** pages at the users location before moving **N, S, E ,W** to then search **n** more places at that point, where **n** can be any number of pages you want to search at each point remembering that each page has **20 Places**. This Engine ensures that we get equal places from all over the users radius.
+## Overview
+The Google Maps API's **nearby search** feature retrieves locations near the user, split into **20 places per page**. If we were to fetch places at a single location and rely on pagination, it would take a long time to reach locations near the edge of the user's radius. This is because we would need to go through multiple pages to cover the entire area, which is inefficient.
 
-This engine performs **$(\text{X} \cdot \text{N})$** searches, where **N** is the number of offset locations. In our case, **N = 4** (N, S, E, W). And **X** is the number of places that we fetched at any single location, further more  **$\text{X} = \text{20} \cdot \text{n}$** where **n** is the number of pages we search at any location, as at each location we have **20 places per page**. Each additional search takes time, so the number of offsets and pages should be chosen wisely. 
+To overcome this limitation, I developed the **Radial Offset Engine**. This engine efficiently retrieves places distributed across the user's search radius by offsetting search locations in the **North (N)**, **South (S)**, **East (E)**, and **West (W)** directions. Instead of only searching at the user's exact location, we perform multiple searches at nearby offset points.
+
+Each search retrieves `n` pages of results, with **20 places per page**, ensuring that locations across the entire search radius are covered effectively.
+
+### Key Adjustments To The Offset And Search Radius:
+- The offset distance is **half the user's search radius** (`radius / 2`), preventing searches from going outside the user's desired area.
+- The search radius at each offset location is also **halved** (`radius / 2`), ensuring places near the edges are not missed.
+- ### i could go on and on about why i made these adjustments but here is a diagram that explains it:
+-- If we divide the search radius and offset distance by 2:
+<img src="./assets/ifdiv.jpg" alt="Home" width="600" height="auto" />
+-- If we DONT divide the search radius and offset distance by 2:
+<img src="./assets/ifnotdiv.jpg" alt="Home" width="600" height="auto" />
+
+This engine performs **$(\text{X} \cdot \text{N})$** searches, where:
+- **N** is the number of offset locations. In this case, **N = 4** (N, S, E, W).
+- **X** is the number of places retrieved at each location.
+- Since each page contains 20 places, we define:
+  - **$\text{X} = \text{20} \cdot \text{n}$**, where **n** is the number of pages searched per location.
 
 After gathering all places:
-1. Recursively fetch **next pages** for each location until we reach our limit.
-2. Remove duplicate places before returning the final list in the case that 2 offsets have a converging radius.
+1. **Recursively fetch next pages** for each location until the page limit is reached.
+2. **Remove duplicate places** to avoid redundant results in cases where two offsets overlap.
 
 ---
 
-### Offset Calculation
+## Offset Calculation
 
-### 1. **Latitude Offset (Base Offset):**
-   - Latitude changes by a constant distance everywhere on Earth.
-   - this offset is in degrees: $1^\circ\approx 111.32 km$
-   - Formula for offset:
-      - $\text{latOffset} = \frac{\text{radius}}{111.32}$
-   - **Example:** For a radius of **25 km**:
-     - $\text{latOffset} = \frac{25}{111.32} \approx 0.224^\circ$
-   - Add this offset to the user’s latitude to move **North** or subtract it to move **South**.
+### 1. **Latitude Offset (Base Offset)**
+   - Latitude changes uniformly everywhere on Earth.
+   - Offset in degrees: $1^\circ \approx 111.32 \text{ km}$
+   - **Formula for base latitude offset:**
+      - $\text{latOffset} = \frac{\text{radius}}{2 \times 111.32}$
+   - **Example:** For a search radius of **25 km**:
+     - $\text{latOffset} = \frac{25}{2 \times 111.32} \approx 0.112^\circ$
+   - This offset is added or subtracted from the user’s latitude to move **North or South**.
 
-### 2. **Longitude Offset:**
-   - Longitude offsets depend on the latitude because the Earth's radius decreases as you move toward the poles. This means we would need a smaller lng offset than our lat offset when closer to the poles, beacuse the earth shrinks as you move towards the poles, a small offset in lng is enough to cover alot of distance there.
+### 2. **Longitude Offset**
+   - Longitude offsets depend on latitude because the Earth's radius decreases as you move toward the poles.
    - Formula for longitude scaling:
      - $\text{lngScale} = \cos\left(\frac{\text{lat} \cdot \pi}{180}\right)$, Where the $\text{lat}$ is multiplied by $\left(\frac{\pi}{180}\right)$ to convert it to radiants
    - Adjusted longitude offset:
+   - Adjusted longitude offset:
      - $\text{lngOffset} = \text{latOffset} \cdot \text{lngScale}$
-   - **Example:** 
-     - At the equator \( $\text{lat} = 0^\circ$ \), \( $\text{lngScale} = 1$ \), so:
+   - **Example:**
+     - At the equator \( \text{lat} = 0^\circ \), \( \text{lngScale} = 1 \), so:
        - $\text{lngOffset} = \text{latOffset}$
-     - At the poles \( $\text{lat} = \pm90^\circ$ \), \( $\text{lngScale} = 0$ \), so \( $\text{lngOffset} = 0$ \).
+     - At 43.6532° (Toronto):
+       - $\text{lngScale} = \cos\left(\frac{43.6532 \times \pi}{180}\right) \approx 0.722$
+       - $\text{lngOffset} = 0.112 \times 0.722 \approx 0.081^\circ$
 
-### 3. **Recursive Fetching:**
-   - For each location, fetch places for all pages (20 places per page) until the page limit is reached.
+### 3. **Recursive Fetching**
+   - At each location, retrieve all **n** pages of places (20 per page) before moving to the next offset.
 
 ---
 
-### Directions of Search
-- **N/S**: Add or subtract the `latOffset` to/from the latitude respectively.
-- **E/W**: Add or subtract the `lngOffset` to/from the longitude respectively.
+## Directions of Search
+- **N/S:** Add or subtract `latOffset` to/from latitude.
+- **E/W:** Add or subtract `lngOffset` to/from longitude.
+
 ---
 
-### Coordinate Offsets Example
+## Example: Coordinate Offsets
 
 ### Given:
 - **User coordinates:**  
-  - Lat: 43.6532, Lng: -79.3832  
-- **Radius:** 25 km
+  - Lat: `43.6532`, Lng: `-79.3832`  
+- **Radius:** `25 km`
 
 ### Step 1: Calculate Latitude Offset  
-- $\text{latOffset} = \frac{\text{radius}}{111.32} = \frac{25}{111.32} \approx 0.2246^\circ$
+- $\text{latOffset} = \frac{\text{radius}}{2 \times 111.32} = \frac{25}{2 \times 111.32} \approx 0.112^\circ$
 
 ### Step 2: Calculate Longitude Offset  
 - $\text{lngScale} = \cos\left(\frac{43.6532 \times \pi}{180}\right) \approx 0.722$
-- $\text{lngOffset} = 0.2246 \times 0.722 \approx 0.1622^\circ$
+- $\text{lngOffset} = 0.112 \times 0.722 \approx 0.081^\circ$
 
 ### Step 3: North Move (Increase Latitude)  
 New Coordinates:  
-- Lat: \( 43.6532 + 0.2246 = 43.8778 \)  
-- Lng: -79.3832  
+- Lat: \( 43.6532 + 0.112 = 43.7652 \)  
+- Lng: `-79.3832`  
 
-**North Move:** \( 43.8778, -79.3832 \)
+**North Move:** \( 43.7652, -79.3832 \)
 
 ### Step 4: East Move (Increase Longitude)  
 New Coordinates:  
-- Lat: 43.6532  
-- Lng: \( -79.3832 + 0.1622 = -79.2210 \)
+- Lat: `43.6532`  
+- Lng: \( -79.3832 + 0.081 = -79.3022 \)
 
-**East Move:** \( 43.6532, -79.2210 \)
+**East Move:** \( 43.6532, -79.3022 \)
 
-### And So On for The Other Directions...
 ---
 
-### Implementation Summary
-1. **Base Offset:** Calculate the latitude offset using the radius:
-   - $\text{latOffset} = \frac{\text{radius}}{111.32}$
+## Implementation Summary
+1. **Base Offset Calculation:**  
+   - $\text{latOffset} = \frac{\text{radius}}{2 \times 111.32}$
+   - $\text{lngOffset} = \text{latOffset} \times \cos\left(\frac{\text{lat} \times \pi}{180}\right)$
 
-2. **Longitude Adjustment:** Calculate the longitude offset by scaling the latitude offset:
-   - $\text{lngOffset} = \text{latOffset} \cdot \cos\left(\frac{\text{lat} \cdot \pi}{180}\right)$
+2. **Recursive Searches:**  
+   - At each offset location, search up to **n** pages.
+   - Remove duplicate places.
 
-3. **Recursive Searches:** Perform up to **n** searches in the N, S, E, W directions. For each search:
-   - Fetch all 20 places per page until we reach our desired page limit.
-   - Remove duplicates.
+3. **Final Output:**  
+   - Return the unique list of places.
 
-4. **Final Output:** Return the unique list of places.
 ---
 
-### Notes
-- The engine fetches **n offsets** in N, S, E, W directions. The number of offsets can be increased by further adjusting the latitude and longitude offsets dynamically.
-- Ensure all places are de-duplicated to avoid redundant results.
----
-
-### Advantages
-- Allows equal Places From all over the users radius insted of just there location without the need of long wait times.
-- Can be used to find a rich set of diversly located places insted of just the ones that are close to the users location.
+## Advantages
+- **Uniform Place Distribution:** Ensures an equal number of places are retrieved from all over the search radius.
+- **Efficient Coverage:** Reduces the number of pages needed to fetch distant places.
+- **Avoids Overshooting:** Ensures searches do not go outside the user's radius.
 
 ---
 ### (Pseudo Code Example)
 ``` javascript
 // ofset calculator
-const baseOffset = radius / 111.32; // dirived formula see places.fetch for dirivation
-// main function to calculate ofset
-function calculateOffset(userLat, baseOffset) {
-  const latInRadians = (userLat * Math.PI) / 180;
-  const longitudeScale = Math.cos(latInRadians); // deriving lng scale i.e the shrinking in lng from lat ofset
-  const dynamicLongitudeOffset = baseOffset * longitudeScale; // new lng ofset based on base ofset 
-  return {
-    latOffset: baseOffset, // Latitude offset is the same regardless of the latitude
-    lngOffset: dynamicLongitudeOffset, // new Longitude offset 
-  };
-}
-const newoffset = calculateOffset(lat, baseOffset);
-const latoffset = newoffset.latOffset; 
-const lngoffset = newoffset.lngOffset;
+function fetchPlaces(userCoordinates, radius){
+  const baseOffset = (radius/2) / 111.32; // dirived formula and divide radius by 2
+  // main function to calculate ofset
+  function calculateOffset(userLat, baseOffset) {
+    const latInRadians = (userLat * Math.PI) / 180;
+    const longitudeScale = Math.cos(latInRadians); // deriving lng scale i.e the shrinking in lng from lat ofset
+    const dynamicLongitudeOffset = baseOffset * longitudeScale; // new lng ofset based on base ofset 
+    return {
+      latOffset: baseOffset, // Latitude offset is the same regardless of the latitude
+      lngOffset: dynamicLongitudeOffset, // new Longitude offset 
+    };
+  }
+  const newoffset = calculateOffset(lat, baseOffset);
+  const latoffset = newoffset.latOffset; 
+  const lngoffset = newoffset.lngOffset;
 
-// resursive call for location getting all the pages
-limit = 5;
-async function fetchAllPlaces(page, userinfo, allPlaces = [], pagecount=0) {
-  data = getplacedata()
-  allPlaces = allPlaces.concat(data)
+  // resursive call for location getting all the pages
+  limit = 5;
+  async function fetchAllPlaces(page, userinfo, allPlaces = [], pagecount=0) {
+    data = getplacedata()
+    allPlaces = allPlaces.concat(data)
 
-  pagecount++
+    pagecount++
 
-  if (pagecount == limit){
+    if (pagecount == limit){
+      return allPlaces;
+    }
+
+    if (data.nextpage){
+      page = data.nextpage
+      return fetchAllPlaces(page, userinfo, allPlaces, pagecount); // serch the same place again but next page
+    }
+
     return allPlaces;
   }
 
-  if (data.nextpage){
-    page = data.nextpage
-    return fetchAllPlaces(page, userinfo, allPlaces, pagecount); // serch the same place again but next page
+  // function to serch places
+  async function searchWithOffset(lat, lng, direction) {
+      const adjustedLat = direction === 'N' ? lat + latoffset : direction === 'S' ? lat - latoffset : lat; 
+      const adjustedLng = direction === 'E' ? lng + lngoffset : direction === 'W' ? lng - lngoffset : lng;
+
+    // get all places at new cordinates
+    return fetchAllPlaces(
+      page, 
+
+      userinfo = {
+      location: `${adjustedLat},${adjustedLng}`,
+      radius: (radius * 1000) / 2, // Convert to meters and divide by 2 
+      key: apiKey,
+      };
+    );
   }
 
-  return allPlaces;
-}
-
-// function to serch places
-async function searchWithOffset(lat, lng, direction) {
-    const adjustedLat = direction === 'N' ? lat + latoffset : direction === 'S' ? lat - latoffset : lat; 
-    const adjustedLng = direction === 'E' ? lng + lngoffset : direction === 'W' ? lng - lngoffset : lng;
-
-  // get all places at new cordinates
-  return fetchAllPlaces(
-    page, userinfo
-  );
-}
-
-// main function to get all places in the directions we want
-function main(lat, lng, direction, etc){
-  allresults += searchWithOfset(userlat, userlng, originaldirection)
-  allresults += searchWithOfset(userlat, userlng, "N")
-  // reperete for S,E,W
-  reutrn removedups(allresults)
+  // main function to get all places in the directions we want
+  function main(lat, lng, direction, etc){
+    allresults += searchWithOfset(userlat, userlng, originaldirection)
+    allresults += searchWithOfset(userlat, userlng, "N")
+    // reperete for S,E,W
+    reutrn removedups(allresults)
+  }
 }
 ```
 
