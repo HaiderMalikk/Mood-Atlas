@@ -192,7 +192,7 @@ html, body {
 .left {
   flex: 1; /* Take up one part of the container */
   text-align: center; /* Center content inside */
-  padding-left: 20px; /* Add padding for content inside */
+  padding-left: 30px; /* Add padding for content inside */
 
 }
 
@@ -218,6 +218,8 @@ html, body {
   position: relative; /* Required for Google Maps */
   border: 5px solid #000000; /* Add a solid border with black color */
   border-radius: 5px; /* Optional: add rounded corners to the border */
+  padding-top: 3%;
+  margin-bottom: 5%;
 }
 
 .map-overlay-box {
