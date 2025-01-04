@@ -3,7 +3,7 @@
 *"Chart your feelings, discover your destination"*
 
 ---
-### There is a Version of this With Way More Stuff Thast unfortunatly not in production, <a href="https://github.com/HaiderMalikk/mood-atlas" style="color: blue;">Check That Out Here</a>.
+### There is a Version of this With Way More Stuff That's unfortunatly not in production, <a href="https://github.com/HaiderMalikk/mood-atlas" style="color: blue;">Check That Out Here</a>.
 
 ---
 
@@ -34,14 +34,14 @@ MOOD-ATLAS/
 ├── .next/                        # Next.js build and runtime files (this folder is the final build)
 ├── app/                          # main application code with all the individual files
 │   ├── global.css                # contains all the css styles used throughout the app
-│   ├── llm_call.js              # this is where the Open AI Api is called and also where the data sent and received, this is called and returns a place number to place processor 
+│   ├── llm_call.js               # this is where the Open AI Api endpoint in pages/api for llm response is called, it's where the data sent and received, when this is called and returns a place number to place processor 
 │   ├── layout.js                 # defines the layout of the app i.e the header main page etc
 │   ├── location_card.js          # contains the logic for displaying location cards with images etc on the map
 │   ├── map.js                    # contains the main google map component 
 │   ├── page.js                   # the main page of the app with all the formatting and order of components i.e where the map, location etc are and there logic along with the user inputs 
-│   ├── places_fetch              # contains the logic for fetching places from google places api to give to the processor for it to forward it to flask
-│   ├── places_processing.js      # this is where all the inputs are received and where we get the places send it to flask get its response and returns the result to the page
-│   └── user_location.js    
+│   ├── places_fetch              # contains the logic for fetching places from google places api endpoint in pages/api for places fetch and contains the radial offset engine
+│   ├── places_processing.js      # this is where all the inputs are received and where we get the places send it to llmcall to get its response and returns the result to the page
+│   └── user_location.js          # where the user location is fetched from the pages/api api endpoint foe getting user coordinates
 ├── pages/api                     # main application api endpoints (basically the server files that make api requests for us so we dont have too do it in the frondend, avoids CORS issues)
 │   ├── fetchLLMresponse.js       # this is where the api call is made to the Open AI Api to get final answer 
 │   ├── fetchPlaces.js            # contains the api endpoint for fetching places from google places api
@@ -260,7 +260,7 @@ function fetchPlaces(userCoordinates, radius){
   // resursive call for location getting all the pages
   limit = 5;
   async function fetchAllPlaces(page, userinfo, allPlaces = [], pagecount=0) {
-    data = getplacedata()
+    data = getplacedata() // api endpoint that gets all places from google maps api
     allPlaces = allPlaces.concat(data)
 
     pagecount++
