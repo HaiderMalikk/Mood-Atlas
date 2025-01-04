@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import './globals.css';
 import Image from 'next/image';
 import logo from '../assets/logo-nobg.png';
+import githublogo from '../assets/github.png';
+import about from '../assets/about.png';
 
 const Layout = ({ children }) => {
   const [isAboutOpen, setIsAboutOpen] = useState(false);
@@ -31,7 +33,7 @@ const Layout = ({ children }) => {
                 style={{ margin: 0, cursor: 'pointer' }}
                 onClick={toggleAboutPopup}
               >
-                <img src="https://img.icons8.com/?size=100&id=82450&format=png&color=000000" alt="About" style={{width: '20px', height: '20px', marginTop: '-10px', marginBottom: '-5px', marginRight: '5px'}} />
+                <Image src={about} alt="About" style={{width: '20px', height: '20px', marginTop: '-10px', marginBottom: '-5px', marginRight: '5px'}} />
                 About
               </h1>
             </div>
@@ -39,7 +41,7 @@ const Layout = ({ children }) => {
             <div style={{ display: 'flex', gap: '20px',}}>
               <a href="https://github.com/HaiderMalikk/Mood-Atlas" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none',}}>
                 <h1 className="github-header button" style={{ margin: 0, cursor: 'pointer',}}>
-                <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="Github" style={{ width: '20px', height: '20px', marginTop: '-10px', marginBottom: '-5px', marginRight: '5px'}} />
+                <Image src={githublogo} alt="Github" style={{ width: '20px', height: '20px', marginTop: '-15px', marginBottom: '-5px', marginRight: '5px'}} />
                   Github</h1>
               </a>
             </div>
