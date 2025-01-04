@@ -154,8 +154,8 @@
 }
 
 .submit-button {
-  margin-top: 25px;
   font: 1rem / 1.5rem 'Inter', sans-serif;
+  margin-top: 3%;
   padding: 20px 80px;
   font-size: 30px;
   font-weight: bold;
@@ -206,15 +206,14 @@ html, body {
   padding-right: 0px;
   padding-top: 0px;
   padding-bottom: 75px;
-  margin-right: -30px;
-  margin-top: -10px;
+  margin-top: 10px;
 }
 
 
 .map-container {
   flex-grow: 1; /* Allows the map to fill all available space */
-  width: calc(100% - 10px); /* Adjust width with padding */
-  height: calc(100% - 20px); /* Adjust height with padding */
+  width: 100%; /* Adjust width with padding */
+  height: 95%; /* Adjust height with padding */
   margin: 10px; /* Adds equal padding around the map */
   position: relative; /* Required for Google Maps */
   border: 5px solid #000000; /* Add a solid border with black color */
@@ -224,7 +223,7 @@ html, body {
 .map-overlay-box {
   position: absolute;
   bottom: 40px;
-  left: 56%;
+  left: 55%;
   width: 50%;
   max-width: 500px;
   height: 210px;
