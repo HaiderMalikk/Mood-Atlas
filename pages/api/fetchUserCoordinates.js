@@ -1,7 +1,11 @@
 import axios from 'axios';
 
 export default async function handler(req, res) {
-  const url = "https://ipapi.co/json/"; // main
+  const ipurl = "https://api.ipify.org?format=json"; 
+  const ipresponse = await axios.get(ipurl);
+  const ip = ipresponse.data.ip;
+  const apikey = process.env.MY_SECRET_IPAPI_API_KEY;
+  const url = `http://api.ipapi.com/api/${ip}?access_key=${apikey}`; // backup
 
   try {
     console.log("Requesting:", url);
@@ -12,7 +16,7 @@ export default async function handler(req, res) {
     if (!response.data || !response.data.latitude || !response.data.longitude) {
       console.error("Invalid API response:", response.data);
       return res.status(500).json({
-        error: "Invalid response from ipapi API",
+        error: "Invalid response from API",
         data: response.data,
 
       });

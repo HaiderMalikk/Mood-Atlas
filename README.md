@@ -3,7 +3,14 @@
 *"Chart your feelings, discover your destination"*
 
 ---
-### There is a Version of this With Way More Stuff That's unfortunatly not in production, <a href="https://github.com/HaiderMalikk/mood-atlas" style="color: blue;">Check That Out Here</a>.
+<h1 href="https://mood-atlas.vercel.app" style="border-bottom: none; margin: 0; color:orange" >Try Out Mood Atlas</h1>
+<a href="https://mood-atlas.vercel.app" style="color: blue;">Check It Out Here
+<img src="./public/link.png" alt="Home" width="50" height="auto" />
+</a>
+
+
+---
+### There is a Version of this With Way More Stuff That's unfortunatly not in production, <a href="https://github.com/HaiderMalikk/mood-atlas" style="color: blue;">Check That Out Here</a>
 
 ---
 
@@ -318,13 +325,13 @@ Create And Deploy This Project As A Web App, Giving user free access to the webs
 
 **Current Version**
 - Home page when first loading in:
-<img src="./assets/firstin.png" alt="Home" width="600" height="auto" />
+<img src="./public/firstin.png" alt="Home" width="600" height="auto" />
 
 - After submitting the form:
-<img src="./assets/afterpromt.png" alt="Home" width="600" height="auto" />
+<img src="./public/afterpromt.png" alt="Home" width="600" height="auto" />
 
 - Open AI usage dashboard:
-<img src="./assets/openai.png" alt="Home" width="600" height="auto" />
+<img src="./public/openai.png" alt="Home" width="600" height="auto" />
 
 - Google's GCP usage dashboard:
-<img src="./assets/gcp.png" alt="Home" width="600" height="auto" />
+<img src="./public/gcp.png" alt="Home" width="600" height="auto" />
