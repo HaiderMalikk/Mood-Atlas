@@ -7,6 +7,7 @@ import logo from '../public/logo-nobg.png';
 import githublogo from '../public/github.png';
 import about from '../public/about.png';
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import { Analytics } from "@vercel/analytics/react"
 
 const Layout = ({ children }) => {
   const [isAboutOpen, setIsAboutOpen] = useState(false);
@@ -77,6 +78,8 @@ const Layout = ({ children }) => {
 
         <main>
           {children}
+          <Analytics />
+          <SpeedInsights />
         </main>
         <footer>
           {/* Add your footer content here */}
