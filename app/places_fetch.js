@@ -108,8 +108,8 @@ THE CONST IS JUST IN PLACE FOR ERROR FIXING THE MATH IS NOT WRONG
   }
 
   function removeclosedplaces(places) {
-    console.log("Removing closed places");
     if (gonow) {
+      console.log("Removing closed places");
       // Filter out places that are not open
       return places.filter(place => place.opening_hours && place.opening_hours.open_now);
     }
