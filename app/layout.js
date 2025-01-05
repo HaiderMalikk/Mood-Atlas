@@ -6,6 +6,7 @@ import Image from 'next/image';
 import logo from '../public/logo-nobg.png';
 import githublogo from '../public/github.png';
 import about from '../public/about.png';
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const Layout = ({ children }) => {
   const [isAboutOpen, setIsAboutOpen] = useState(false);
