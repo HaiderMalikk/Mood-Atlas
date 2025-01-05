@@ -52,9 +52,10 @@ MOOD-ATLAS/
 ├── pages/api                     # main application api endpoints (basically the server files that make api requests for us so we dont have too do it in the frondend, avoids CORS issues)
 │   ├── fetchLLMresponse.js       # this is where the api call is made to the Open AI Api to get final answer 
 │   ├── fetchPlaces.js            # contains the api endpoint for fetching places from google places api
-│   └── fetchUserCoordinates.js   # contains the api endpoint for getting the user's initial location from ipapi 
+│   └── fetchgcpapi.js            # Fetches GCP api keys for places and maps so we dont expose env variables to frontend
 ├── public/                       # contains all the static assets like images etc                
 ├── utils/                        # contains utility functions used throughout the app like global colors etc
+├── babel.config.js               # babel config for website setting and controlling things like the console in the browser
 ├── next.config.mjs               # contains the configuration for the next.js app like trusted domains etc
 └── tailwind.config.mjs           # contains the configuration for tailwind css
 ```

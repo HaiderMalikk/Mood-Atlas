@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import { Map } from "./map";
 import { LocationCard } from "./location_card";
 import { processInputs } from "./places_processing";
-import { fetchUserCoordinates } from "./user_location"
 import "./globals.css";
 
 const WelcomePage = () => {
@@ -14,22 +13,21 @@ const WelcomePage = () => {
   const [userCoordinates, setUserCoordinates] = useState(null);
   const [gonow, setGonow] = useState(false);
 
-  // Fetch user coordinates only once at the start hence why the mount is empty '[]'
+  // Get user coordinates only once
+  // geolocation is most accurate but needs user permission
   useEffect(() => {
-    const getcoordinates = async () => {
-    const coordinates = await fetchUserCoordinates();
-    // check if cordinates arre a number 
-    if (coordinates && typeof coordinates.lat === 'number' && typeof coordinates.lng === 'number') {
-      setUserCoordinates(coordinates);
-    }
-    else {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        setUserCoordinates({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        });
+      });
+    } else {
       alert("You Location could not be found, setting default to Toronto");
       setUserCoordinates({ lat: 43.6532, lng: -79.3832 });
     }
     console.log(`User coordinates set to: coordinates: lat: ${coordinates.lat}, lng: ${coordinates.lng}`);
-    };
-    getcoordinates();
-
   }, []);
 
   // State for user coordinates (user location)
