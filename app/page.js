@@ -18,7 +18,8 @@ const WelcomePage = () => {
   useEffect(() => {
     const getcoordinates = async () => {
     const coordinates = await fetchUserCoordinates();
-    if (coordinates) {
+    // check if cordinates arre a number 
+    if (coordinates && typeof coordinates.lat === 'number' && typeof coordinates.lng === 'number') {
       setUserCoordinates(coordinates);
     }
     else {
@@ -100,7 +101,7 @@ const WelcomePage = () => {
     setGonow(false);
     setProcessedData({
       title: "Start by Filling the inputs and then click submit",
-      address: "",
+      address: "Please wait a while Submitting, processing can take upto 10 seconds",
       picture: "",
       reviews: "",
       matchscore: null,

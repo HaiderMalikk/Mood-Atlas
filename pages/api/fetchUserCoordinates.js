@@ -1,8 +1,7 @@
 import axios from 'axios';
 
 export default async function handler(req, res) {
-  //const url = "https://ipapi.co/json/"; // main
-  const url = "http://api.ipapi.com/api/76.66.141.159?access_key=38737091724f957570b74a376584ad21"; // backup
+  const url = "https://ipapi.co/json/"; // main
 
   try {
     console.log("Requesting:", url);
