@@ -48,7 +48,7 @@ THE CONST IS JUST IN PLACE FOR ERROR FIXING THE MATH IS NOT WRONG
   
   // Recursive function to fetch all pages
   async function fetchAllPlaces(url, params, allPlaces = [], pageCount = 0) {
-    const pageLimit = 10;
+    const pageLimit = 1;
     try {
       // Fetch the current page of results
       const response = await axios.get(url, { params, headers: { 'X-Requested-With': 'XMLHttpRequest' } });
