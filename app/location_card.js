@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import logo from '../assets/logo.png';
+import logo from '../public/logo.png';
 
 export function LocationCard({ title, description, picture, reviews, matchscore }) {
   let formattedreviews = '';

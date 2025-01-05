@@ -46,7 +46,7 @@ MOOD-ATLAS/
 │   ├── fetchLLMresponse.js       # this is where the api call is made to the Open AI Api to get final answer 
 │   ├── fetchPlaces.js            # contains the api endpoint for fetching places from google places api
 │   └── fetchUserCoordinates.js   # contains the api endpoint for getting the user's initial location from ipapi 
-├── assets/                       # contains all the static assets like images etc                 # pom file containing all the imports for the springboot project                
+├── public/                       # contains all the static assets like images etc                
 ├── utils/                        # contains utility functions used throughout the app like global colors etc
 ├── next.config.mjs               # contains the configuration for the next.js app like trusted domains etc
 └── tailwind.config.mjs           # contains the configuration for tailwind css

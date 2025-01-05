@@ -3,9 +3,9 @@
 import React, { useState } from 'react';
 import './globals.css';
 import Image from 'next/image';
-import logo from '../assets/logo-nobg.png';
-import githublogo from '../assets/github.png';
-import about from '../assets/about.png';
+import logo from '../public/logo-nobg.png';
+import githublogo from '../public/github.png';
+import about from '../public/about.png';
 
 const Layout = ({ children }) => {
   const [isAboutOpen, setIsAboutOpen] = useState(false);
@@ -18,10 +18,6 @@ const Layout = ({ children }) => {
   return (
     <html>
       <head>
-        {/* <script
-          defer
-          src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places&callback=YOUR_CALLBACK_NAME`}
-        ></script> */}
       </head>
       <body>
         <header className='header-links'>
@@ -39,7 +35,7 @@ const Layout = ({ children }) => {
             </div>
             {/* Github on the right */}
             <div style={{ display: 'flex', gap: '20px',}}>
-              <a href="https://github.com/HaiderMalikk/Mood-Atlas" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none',}}>
+              <a href="https://github.com/HaiderMalikk/mood-atlas-production_build" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none',}}>
                 <h1 className="github-header button" style={{ margin: 0, cursor: 'pointer',}}>
                 <Image src={githublogo} alt="Github" style={{ width: '20px', height: '20px', marginTop: '-15px', marginBottom: '-5px', marginRight: '5px'}} />
                   Github</h1>

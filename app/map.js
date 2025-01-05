@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef } from 'react';
 import { Loader } from '@googlemaps/js-api-loader';
+import axios from 'axios';
 /* 
 api comunication with js-api-loader so no api request is made here
 */
@@ -15,15 +16,21 @@ export function Map({userCoordinates}) {
     const getMap = async () => {
       console.log('getting map');
 
+      console.log("Getting API key from GCP API");
+      const response = await axios.get('/api/fetchgcpapi', {headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+      console.log("Response From GCP API REQUEST: ",response);
+      const mapidkey = response.data.id;
+      const mapapikey = response.data.key;
+
       // Check if the API key and map ID are present
-      if (!process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || !process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID) {
-        console.error('Google Maps API key or Map ID is missing');
+      if (!mapapikey || !mapidkey) {
+        console.error('Google Maps API Key or Map ID is missing');
         return;
       }
 
       // Loader (specifies map details and key)
       const loader = new Loader({
-        apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
+        apiKey: mapapikey,
         version: 'weekly', // Map updates weekly
       });
 
@@ -35,7 +42,7 @@ export function Map({userCoordinates}) {
       const googleMapsOptions = {
         center: position,
         zoom: 14,
-        mapId: process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID,
+        mapId: mapidkey,
       };
 
       // Ensure the map container is correctly sized and visible

@@ -1,18 +1,13 @@
 'use client';
 import axios from 'axios';
 
-export function formatPlaces(places, gonow) {
-  console.log("Formatting places Go now is: ", gonow);
+export function formatPlaces(places) {
 
   // Initialize formatted object
   const formattedPlaces = {};
 
   // Iterate through the places array and format the data
   places.forEach((place, index) => {
-    // Check if we need to filter by "open_now"
-    if (gonow && (!place.opening_hours || !place.opening_hours.open_now)) {
-      return; // Skip this place if it's not open and gonow is true
-    }
 
     // Extract relevant details
     const name = place.name;

@@ -1,12 +1,13 @@
 'use client';
 import { fetchPlaces } from "./places_fetch";
 import { fetchLLMresponse } from "./llm_call";
+import axios from "axios";
 
 export async function processInputs(mood, hobby, activity, userCoordinates, radius, gonow) {
   console.log(`Starting place processing for mood: ${mood}, hobby: ${hobby}, activity: ${activity}, coordinates: Lat: ${userCoordinates.lat}, Lng: ${userCoordinates.lng}, radius: ${radius}`);
   try {
     // Fetch places using the helper function
-    const places = await fetchPlaces(userCoordinates, radius);
+    const places = await fetchPlaces(userCoordinates, radius, gonow);
     console.log("Places received at places processing");
 
     // Check if places were retrieved
@@ -15,7 +16,7 @@ export async function processInputs(mood, hobby, activity, userCoordinates, radi
 
       // Fetch data from the Open AI API using the helper function
       console.log("Sending places to Open AI for response");
-      const LLMResult = await fetchLLMresponse(places, mood, hobby, activity, gonow);
+      const LLMResult = await fetchLLMresponse(places, mood, hobby, activity);
 
       if (LLMResult !== null) {
         console.log("Extracting place number from LLM response");
@@ -29,12 +30,18 @@ export async function processInputs(mood, hobby, activity, userCoordinates, radi
 
       console.log("Getting place details");
 
+      // getting api key to be used for google maps picture
+      console.log("Getting API key from GCP API");
+      const response = await axios.get('/api/fetchgcpapi', {headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+      console.log("Response From GCP API REQUEST: ",response);
+      const apikey = response.data.key;
+
       // Extract details for place
       const finalPlace = places[finalPlaceNumber];  // Directly access the place from the array NO NEED FOR places.results as we deal with that in places fetch
       const title = finalPlace.name
       const address = finalPlace.vicinity
       const photoReference = finalPlace.photos && finalPlace.photos[0]?.photo_reference 
-                              ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${finalPlace.photos[0].photo_reference}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}` 
+                              ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${finalPlace.photos[0].photo_reference}&key=${apikey}` 
                               : "No photo available will be set to default in page.js.";
       const coordinates = finalPlace.geometry.location;
       const reviews = finalPlace.rating;
