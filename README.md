@@ -322,3 +322,9 @@ Create And Deploy This Project As A Web App, Giving user free access to the webs
 
 - After submitting the form:
 <img src="./assets/afterpromt.png" alt="Home" width="600" height="auto" />
+
+- Open AI usage:
+<img src="./assets/openai.png" alt="Home" width="600" height="auto" />
+
+- Google's GCP usage:
+<img src="./assets/gcp.png" alt="Home" width="600" height="auto" />
