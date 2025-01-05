@@ -131,7 +131,7 @@ return formatanswer(result)
 
 *Latitude vs Longitude:*
 
-<img src="./assets/radial.png" alt="Home" width="600" height="auto" />
+<img src="./public/radial.png" alt="Home" width="600" height="auto" />
 
 ---
 
@@ -147,11 +147,11 @@ Each search retrieves `n` pages of results, with **20 places per page**, ensurin
 - The search radius at each offset location is also **halved** (`radius / 2`), ensuring places near the edges are not missed.
 - ### i could go on and on about why i made these adjustments but here is a diagram that explains it:
 - If we divide the search radius and offset distance by 2:
-<img src="./assets/ifdiv.jpg" alt="Home" width="600" height="auto" />
+<img src="./public/ifdiv.jpg" alt="Home" width="600" height="auto" />
 
 
 - If we DONT divide the search radius and offset distance by 2:
-<img src="./assets/ifnotdiv.jpg" alt="Home" width="600" height="auto" />
+<img src="./public/ifnotdiv.jpg" alt="Home" width="600" height="auto" />
 
 This engine performs **$(\text{X} \cdot \text{N})$** searches, where:
 - **N** is the number of offset locations. In this case, **N = 4** (N, S, E, W).
