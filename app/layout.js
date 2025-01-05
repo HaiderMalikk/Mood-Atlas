@@ -20,10 +20,10 @@ const Layout = ({ children }) => {
   return (
     <html>
       <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/app/favicon.ico" sizes="any" />
         <link
           rel="icon"
-          href="/icon?<generated>"
+          href="/app/icon.ico?<generated>"
           type="image/<generated>"
           sizes="<generated>"
         />
