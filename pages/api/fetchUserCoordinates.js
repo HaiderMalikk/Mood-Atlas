@@ -5,7 +5,7 @@ export default async function handler(req, res) {
   const ipresponse = await axios.get(ipurl);
   const ip = ipresponse.data.ip;
   const apikey = process.env.MY_SECRET_IPAPI_API_KEY;
-  const url = `http://api.ipapi.com/api/${ip}?access_key=${apikey}`; // backup
+  const url = `http://api.ipapi.com/api/${ip}?access_key=${apikey}`; 
 
   try {
     console.log("Requesting:", url);
