@@ -27,7 +27,7 @@ const WelcomePage = () => {
       alert("You Location could not be found, setting default to Toronto");
       setUserCoordinates({ lat: 43.6532, lng: -79.3832 });
     }
-    console.log("User coordinates set to: coordinates:", userCoordinates);
+    console.log("User coordinates set to: coordinates:", userCoordinates); // Log user coordinates
   }, []);
 
   // State for user coordinates (user location)
