@@ -76,7 +76,7 @@ THE CONST IS JUST IN PLACE FOR ERROR FIXING THE MATH IS NOT WRONG
       if (data.next_page_token) {
         console.log('Next page token found. Waiting before fetching the next page...');
         // Wait 2 seconds before using the next_page_token (Google API requirement)
-        await new Promise((resolve) => setTimeout(resolve, 100));
+        await new Promise((resolve) => setTimeout(resolve, 1000));
 
         // Fetch the next page recursively
         params.pagetoken = data.next_page_token;
