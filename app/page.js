@@ -12,6 +12,8 @@ const WelcomePage = () => {
   const [radius, setRadius] = useState(25);
   const [userCoordinates, setUserCoordinates] = useState(null);
   const [gonow, setGonow] = useState(false);
+  
+  alert("CURRENTLY UNDER MAINTENANCE, CHECK BACK LATER");
 
   // Get user coordinates only once
   // geolocation is most accurate but needs user permission
