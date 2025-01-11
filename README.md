@@ -336,3 +336,6 @@ Create And Deploy This Project As A Web App, Giving user free access to the webs
 
 - Google's GCP usage dashboard:
 <img src="./public/gcp.png" alt="Home" width="600" height="auto" />
+
+- Vercel dashboard for deployment (first 5 Days!):
+<img src="./public/vercel.png" alt="Home" width="600" height="auto " />
