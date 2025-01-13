@@ -60,7 +60,7 @@
 .input-group {
   display: flex;
   flex-direction: column;
-  gap: 50px; /* Space between input containers */
+  gap: 65px; /* Space between input containers */
 }
 
 .input-container {
@@ -70,15 +70,15 @@
 
 .input-title {
   font: 1rem / 1.5rem 'Inter', sans-serif;
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: bold;
   margin-bottom: 5px; /* Add space between title and input box */
   color: var(--backgroundcolor); /* Dark gray color for text */
 }
 
 .input-box {
-  padding: 10px;
-  font-size: 1rem;
+  padding: 12px;
+  font-size: 1.2rem;
   border: 2px solid var(--backgroundcolor); /* Light gray border */
   border-radius: 5px;
   width: 100%; /* Full width of container */
@@ -108,7 +108,7 @@
 
 .slider-title {
   font: 1rem / 1.5rem 'Inter', sans-serif;
-  font-size: 1rem;
+  font-size: 1.3rem;
   font-weight: bold;
   color: var(--backgroundcolor);
   margin: 0;
@@ -145,7 +145,7 @@
   white-space: nowrap;
   display: inline-block;
   font: 1rem / 1.5rem 'Inter', sans-serif;
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: bold;
   color: var(--backgroundcolor);
 }
@@ -157,9 +157,9 @@
 
 .submit-button {
   font: 1rem / 1.5rem 'Inter', sans-serif;
-  margin-top: 3%;
-  padding: 20px 80px;
-  font-size: 30px;
+  margin-top: 4%;
+  padding: 30px 100px;
+  font-size: 40px;
   font-weight: bold;
   color: white;
   background-color: var(--backgroundcolor); 
@@ -208,6 +208,7 @@ html, body {
   padding-right: 0px;
   padding-top: 0px;
   padding-bottom: 75px;
+  margin-right: -200px;
   margin-top: 10px;
 }
 
@@ -227,11 +228,11 @@ html, body {
 .map-overlay-box {
   position: absolute;
   bottom: 40px;
-  left: 55%;
+  left: 53%;
   width: 50%;
-  max-width: 500px;
+  max-width: 600px;
   height: 210px;
-  background-color: #272c30; /* Solid black background */
+  background-color: #272c30; /* Solid gray background */
   color: white;
   padding: 10px 20px;
   box-sizing: border-box;
@@ -277,9 +278,9 @@ html, body {
 }
 
 .map-image {
-  width: 180px;
-  height: 180px;
-  object-fit: contain;
+  width: 250px;
+  height: 170px;
+  border: 4px solid #000000;
   border-radius: 5px;
 }
 
@@ -297,6 +298,8 @@ html, body {
 .loading-container {
   font: 1rem / 1.5rem 'Inter', sans-serif;
   display: flex;
+  font-size: 1.5rem;
+  padding-top: 30px;
   align-items: center; /* Vertically center the spinner and text */
   justify-content: center; /* Optional: centers the whole container */
   gap: 10px; /* Space between spinner and text */
@@ -304,7 +307,8 @@ html, body {
 
 .loading-container-map {
   font: 1rem / 1.5rem 'Inter', sans-serif;
-  padding-top: 10rem;
+  padding-top: 15rem;
+  font-size: 1.5rem;
   display: flex;
   align-items: center; /* Vertically center the spinner and text */
   justify-content: center; /* Optional: centers the whole container */
@@ -431,7 +435,7 @@ html, body {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 15px;
+  font-size: 1.2rem;
   cursor: pointer;
   margin-left: 20px;
   white-space: nowrap;  /* Prevents text wrapping */
