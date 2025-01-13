@@ -51,4 +51,4 @@ springboot-user-backend/target/classes/application.properties
 .gitignore
 
 # info file
-README.txt
+todo.txt

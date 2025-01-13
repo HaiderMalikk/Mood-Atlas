@@ -8,9 +8,14 @@ export function formatPlaces(places) {
 
   // Iterate through the places array and format the data
   places.forEach((place, index) => {
+    // If place is undefined, log it
+    if (place === undefined) {
+      console.log('Place is undefined skipping this iteration');
+      return; // This only skips this iteration, does NOT stop the entire loop
+    }
 
     // Extract relevant details
-    const name = place.name;
+    const name = place.displayName.text;
     const types = place.types ? place.types.join(", ") : "Unknown"; // Join types into a single string
 
     // Store in formatted object with the same key
@@ -22,9 +27,9 @@ export function formatPlaces(places) {
 
 
 
-export async function fetchLLMresponse(places, mood, hobby, activity, gonow) {
-  console.log("Sending request to backend API for OpenAI response");
-  const newplaces = formatPlaces(places, gonow);
+export async function fetchLLMresponse(places, mood, hobby, activity) {
+  console.log("Sending request to backend API for OpenAI response The places are:", places);
+  const newplaces = formatPlaces(places);
   console.log("New places formatted to be sent to OPEN AI backend:", newplaces);
   console.log("length of new places:", Object.keys(newplaces).length);
 

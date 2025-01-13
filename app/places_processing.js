@@ -38,12 +38,25 @@ export async function processInputs(mood, hobby, activity, userCoordinates, radi
 
       // Extract details for place
       const finalPlace = places[finalPlaceNumber];  // Directly access the place from the array NO NEED FOR places.results as we deal with that in places fetch
-      const title = finalPlace.name
-      const address = finalPlace.vicinity
-      const photoReference = finalPlace.photos && finalPlace.photos[0]?.photo_reference 
-                              ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${finalPlace.photos[0].photo_reference}&key=${apikey}` 
+      const title = finalPlace.displayName.text;
+      function formatAddress(address) {
+        // Split the address by commas
+        const parts = address.split(',');
+      
+        // Return the first two parts of the address
+        if (parts.length > 1) {
+          return parts.slice(0, 2).join(',').trim();
+        }
+      
+        // If there's no comma, return the full address
+        return address;
+      }
+      const Fulladdress = finalPlace.formattedAddress;
+      const address = formatAddress(Fulladdress); // taking off the postal and country 
+      const photoReference = finalPlace.photos && finalPlace.photos[0]?.name 
+                              ? `https://places.googleapis.com/v1/${finalPlace.photos[0].name}/media?key=${apikey}&maxWidthPx=400`
                               : "No photo available will be set to default in page.js.";
-      const coordinates = finalPlace.geometry.location;
+      const coordinates = finalPlace.location;
       const reviews = finalPlace.rating;
 
       console.log(`Final Processed Place: Name - ${title}, Address - ${address}, Photo URL - ${photoReference}, coordinates - lat: ${coordinates.lat}, lng: ${coordinates.lng}, reviews - ${reviews} matchpercentage - ${matchpercentage}%`);

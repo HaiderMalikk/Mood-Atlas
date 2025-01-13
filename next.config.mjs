@@ -5,9 +5,9 @@ const nextConfig = {
       remotePatterns: [
         {
           protocol: 'https',
-          hostname: 'maps.googleapis.com',
+          hostname: 'places.googleapis.com',
           port: '',
-          pathname: '/maps/api/place/photo**',
+          pathname: '/**',
         },
       ],
     },

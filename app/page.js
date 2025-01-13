@@ -75,7 +75,8 @@ const WelcomePage = () => {
     });
   
     if (result.coordinates) {
-      const { lat, lng } = result.coordinates;
+      const lat = result.coordinates.latitude;
+      const lng = result.coordinates.longitude;
       setUserCoordinates({ lat, lng });
       console.log(`User coordinates set to: lat: ${lat}, lng: ${lng}`);
     } else {

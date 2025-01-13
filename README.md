@@ -10,7 +10,7 @@
 
 
 ---
-### There is a Version of this With Way More Stuff That's unfortunatly not in production, <a href="https://github.com/HaiderMalikk/mood-atlas" style="color: blue;">Check That Out Here</a>
+### There is a Version of this app with more technologies like Spring, Flask etc That's unfortunately outdated and not in production, <a href="https://github.com/HaiderMalikk/mood-atlas" style="color: blue;">You Can Check That Out Here</a>
 
 ---
 
@@ -30,7 +30,6 @@
 - **Next.js**: A React-based framework that enables server-side rendering, static site generation, and other advanced web development features.
 - **Google Maps API**: Provides interactive maps and location data, allowing the app to display user destinations on a map.
 - **Google Places API**: Fetches information about places, such as names, addresses, reviews, and images, to enhance user experience by providing more details about recommended locations.
-- **Other API's**: Uses ipapi to get the users initial location.
 - **ChatGPT’s LLM (Large Language Model)**: A powerful AI language model by OpenAI used to process and generate human-like responses to user input, providing personalized recommendations.
 
 ## Project Structure
@@ -70,19 +69,16 @@ MOOD-ATLAS/
 ---
 
 **Ex Data, Google Places API's nearby search returns us a json file that looks something like this, this data is needed for the website to work**
+**THIS VERSION USES THE NEW PLACES API**
 
 ```json
 {
-   "name": "Residence Inn Toronto",
-  {
-  "place_id" : "ChIJRQoITNc0K4gRMBoATwPJLYs",
-        "plus_code" : 
-  },
-  "vicinity" : "255 Wellington Street West, Toronto",
+   "displayName": "Residence Inn Toronto",
+  "formattedAddress" : "255 Wellington Street West, Toronto",
   "location" : 
   {
-    "lat" : 43.64192569999999,
-    "lng" : -79.3894923
+    "latitude" : 43.64192569999999,
+    "longitude" : -79.3894923
   },
   "types" : [ "hotel", "establishment" ],
   "opening_hours":
@@ -92,9 +88,11 @@ MOOD-ATLAS/
   "photos" : 
   [
     {
-      "photo_reference" : "AWYs27znPtKuOjv43tZBTCFngJGTvlpvSD74iz3mXFo7trkgn8-jNhGtxP0zT8OdBpgRDLX4vih2Jvs-8PcJh_KVRfKablKQgHorz3rTNh0cqulc5R5OHjdI7JM2EwzxoCm_LSn2uKNu3Fw6MuYoFgSb-GrVlDZ2uudhal7pbx1KO3m7chFA",
+      "name": "places/Ch212hj23hJAHSJhjh3"
     }
   ],
+  "ratings" : 4.1,
+
   {"etc etc this is not the exact format of the json file but it is something like this"}
 }
 ```
@@ -125,6 +123,32 @@ const result = response.data.result.choices[0].message.content;
 return formatanswer(result)
 ```
 
+**Google Maps API calls via googlemapsloader (Map + MArker)**
+```javascript
+const loader = new Loader({
+  apiKey: mapapikey,
+  version: 'weekly', 
+});
+
+const { Map } = await loader.importLibrary('maps'); // create a map
+const position = userCoordinates; 
+
+const googleMapsOptions = {
+  center: position,
+  zoom: 14,
+  mapId: mapidkey, // the mad id from my custom map
+};
+
+const map = new Map(mapRef.current, googleMapsOptions);
+
+const { Marker } = await loader.importLibrary('marker'); // create marker
+new Marker({
+  map: map,
+  position: position,
+  icon: mapicon,
+});
+```
+
 <h2 style="border-bottom: none; margin: 0;">RADIAL OFFSET ENGINE</h1>
 
 *Radial Offset Engine for Google Maps Places API*
@@ -136,11 +160,11 @@ return formatanswer(result)
 ---
 
 ## Overview
-The Google Maps API's **nearby search** feature retrieves locations near the user, split into **20 places per page**. If we were to fetch places at a single location and rely on pagination, it would take a long time to reach locations near the edge of the user's radius. This is because we would need to go through multiple pages to cover the entire area, which is inefficient.
+The Google Maps NEW Places API's **nearby search** feature retrieves locations near the user. If we were to fetch places at a single location and rely on pagination, it would take a long time to reach locations near the edge of the user's radius. This is because we would need to go through multiple pages to cover the entire area, which is inefficient.
 
-To overcome this limitation, I developed the **Radial Offset Engine**. This engine efficiently retrieves places distributed across the user's search radius by offsetting search locations in the **North (N)**, **South (S)**, **East (E)**, and **West (W)** directions. Instead of only searching at the user's exact location, we perform multiple searches at nearby offset points.
+To overcome this limitation, I developed the **Radial Offset Engine**. This engine efficiently retrieves places distributed across the user's search radius by offsetting search locations in the **North (N)**, **South (S)**, **East (E)**, **West (W)** directions along with **NE,SE,SW,NW**. Instead of only searching at the user's exact location, we perform multiple searches at nearby offset points.
 
-Each search retrieves `n` pages of results, with **20 places per page**, ensuring that locations across the entire search radius are covered effectively.
+Each search retrieves **n** results, with **n** being the limit we impose on the search when sending the request, the 5 total searches ensuring that locations across the entire search radius are covered effectively.
 
 ### Key Adjustments To The Offset And Search Radius:
 - The offset distance is **half the user's search radius** (`radius / 2`), preventing searches from going outside the user's desired area.
@@ -150,14 +174,12 @@ Each search retrieves `n` pages of results, with **20 places per page**, ensurin
 <img src="./public/ifdiv.jpg" alt="Home" width="600" height="auto" />
 
 
-- If we DONT divide the search radius and offset distance by 2:
+- If we do not divide the search radius and offset distance by 2:
 <img src="./public/ifnotdiv.jpg" alt="Home" width="600" height="auto" />
 
 This engine performs **$(\text{X} \cdot \text{N})$** searches, where:
-- **N** is the number of offset locations. In this case, **N = 4** (N, S, E, W).
-- **X** is the number of places retrieved at each location.
-- Since each page contains 20 places, we define:
-  - **$\text{X} = \text{20} \cdot \text{n}$**, where **n** is the number of pages searched per location.
+- **N** is the number of offset locations. In this case, **N = 4** (N, S, E, W, NW....).
+- **X** is the number of places retrieved at each location which is up to us.
 
 After gathering all places:
 1. **Recursively fetch next pages** for each location until the page limit is reached.
@@ -190,13 +212,17 @@ After gathering all places:
        - $\text{lngOffset} = 0.112 \times 0.722 \approx 0.081^\circ$
 
 ### 3. **Recursive Fetching**
-   - At each location, retrieve all **n** pages of places (20 per page) before moving to the next offset.
+   - At each location, retrieve all **n** places before moving to the next offset.
 
 ---
 
 ## Directions of Search
 - **N/S:** Add or subtract `latOffset` to/from latitude.
 - **E/W:** Add or subtract `lngOffset` to/from longitude.
+- **NE:** Add `latOffset` and `lngOffset` to latitude and longitude respectively.
+- **SE:** Add `latOffset` and subtract `lngOffset` to latitude and longitude respectively
+- **SW:** Subtract `latOffset` and subtract `lngOffset` to latitude and longitude respectively
+- **NW:** Subtract `latOffset` and add `lngOffset` to latitude and longitude respectively
 
 ---
 
@@ -254,10 +280,10 @@ New Coordinates:
 ---
 ### (Pseudo Code Example)
 ``` javascript
-// ofset calculator
+// offset calculator
 function fetchPlaces(userCoordinates, radius){
-  const baseOffset = (radius/2) / 111.32; // dirived formula and divide radius by 2
-  // main function to calculate ofset
+  const baseOffset = (radius/2) / 111.32; // derived formula and divide radius by 2
+  // main function to calculate offset
   function calculateOffset(userLat, baseOffset) {
     const latInRadians = (userLat * Math.PI) / 180;
     const longitudeScale = Math.cos(latInRadians); // deriving lng scale i.e the shrinking in lng from lat ofset
@@ -271,48 +297,34 @@ function fetchPlaces(userCoordinates, radius){
   const latoffset = newoffset.latOffset; 
   const lngoffset = newoffset.lngOffset;
 
-  // resursive call for location getting all the pages
-  limit = 5;
-  async function fetchAllPlaces(page, userinfo, allPlaces = [], pagecount=0) {
-    data = getplacedata() // api endpoint that gets all places from google maps api
-    allPlaces = allPlaces.concat(data)
-
-    pagecount++
-
-    if (pagecount == limit){
-      return allPlaces;
-    }
-
-    if (data.nextpage){
-      page = data.nextpage
-      return fetchAllPlaces(page, userinfo, allPlaces, pagecount); // serch the same place again but next page
-    }
-
-    return allPlaces;
-  }
-
-  // function to serch places
+  // function to search places
   async function searchWithOffset(lat, lng, direction) {
-      const adjustedLat = direction === 'N' ? lat + latoffset : direction === 'S' ? lat - latoffset : lat; 
-      const adjustedLng = direction === 'E' ? lng + lngoffset : direction === 'W' ? lng - lngoffset : lng;
+      const adjustedLat = direction === 'N' ? lat + latoffset : direction === 'S' ? lat - latoffset : direction = .......etc: lat; 
+      const adjustedLng = direction === 'E' ? lng + lngoffset : direction === 'W' ? lng - lngoffset : direction = .......etc: lng;
 
-    // get all places at new cordinates
-    return fetchAllPlaces(
-      page, 
+      const params = {
+      lat: adjustedLat,
+      lng: adjustedLng,
+      radius: (radius * 1000) / 2, // Convert to meters and divide by 2 for half the radius see read me for more info
+    };
 
-      userinfo = {
-      location: `${adjustedLat},${adjustedLng}`,
-      radius: (radius * 1000) / 2, // Convert to meters and divide by 2 
-      key: apiKey,
-      };
-    );
+    // call api to get places at new cords
+    try {
+      const response = await axios.get('/api/fetchPlaces');
+      const data = response.data;
+
+      return data.places || [];
+    } catch (error) {
+      return [];
+    }
   }
 
+  allresults = []
   // main function to get all places in the directions we want
   function main(lat, lng, direction, etc){
     allresults += searchWithOfset(userlat, userlng, originaldirection)
     allresults += searchWithOfset(userlat, userlng, "N")
-    // reperete for S,E,W
+    // reperete for S,E,W, NW... etc
     reutrn removedups(allresults)
   }
 }
@@ -329,13 +341,13 @@ Create And Deploy This Project As A Web App, Giving user free access to the webs
 <img src="./public/firstin.png" alt="Home" width="600" height="auto" />
 
 - After submitting the form:
-<img src="./public/afterpromt.png" alt="Home" width="600" height="auto" />
+<img src="./public/afterprompt.png" alt="Home" width="600" height="auto" />
 
 - Open AI usage dashboard:
 <img src="./public/openai.png" alt="Home" width="600" height="auto" />
 
-- Google's GCP usage dashboard:
+- Google's GCP usage dashboard (Running this is not cheap but i have GCP's free trial credits so i can run it for a bit):
 <img src="./public/gcp.png" alt="Home" width="600" height="auto" />
 
-- Vercel dashboard for deployment (first 5 Days!):
+- Vercel dashboard for deployment (first 7 Days!):
 <img src="./public/vercel.png" alt="Home" width="600" height="auto " />

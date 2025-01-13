@@ -42,7 +42,7 @@ export function Map({userCoordinates}) {
       const googleMapsOptions = {
         center: position,
         zoom: 14,
-        mapId: mapidkey,
+        mapId: mapidkey, // the mad id from map management not from map styles
       };
 
       // Ensure the map container is correctly sized and visible
