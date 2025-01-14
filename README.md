@@ -160,17 +160,17 @@ new Marker({
 ---
 
 ## Overview
-The Google Maps NEW Places API's **nearby search** feature retrieves locations near the user. If we were to fetch places at a single location and rely on pagination, it would take a long time to reach locations near the edge of the user's radius. This is because we would need to go through multiple pages to cover the entire area, which is inefficient.
+The Google Maps NEW Places API's **nearby search** feature retrieves locations near the user. If we were to fetch places at a single location we can only get a max of 20 places, and if we rely on pagination, it would be imposible to reach locations near the edge of the user's radius. This is where the radial offset engine comes in.
 
 To overcome this limitation, I developed the **Radial Offset Engine**. This engine efficiently retrieves places distributed across the user's search radius by offsetting search locations in the **North (N)**, **South (S)**, **East (E)**, **West (W)** directions along with **NE,SE,SW,NW**. Instead of only searching at the user's exact location, we perform multiple searches at nearby offset points.
 
-Each search retrieves **n** results, with **n** being the limit we impose on the search when sending the request, the 5 total searches ensuring that locations across the entire search radius are covered effectively.
+Each search retrieves **n** results, with **n** being 20 (the max nearby places we can get using the api although can rage from 1-20), the 9 total searches ensuring that locations across the entire search radius are covered effectively.
 
 ### Key Adjustments To The Offset And Search Radius:
 - The offset distance is **half the user's search radius** (`radius / 2`), preventing searches from going outside the user's desired area.
 - The search radius at each offset location is also **halved** (`radius / 2`), ensuring places near the edges are not missed.
 - ### i could go on and on about why i made these adjustments but here is a diagram that explains it:
-- If we divide the search radius and offset distance by 2:
+- If we divide the search radius and offset distance by 2 (this ex shows only N,S,E,W but imagine this with the NW, NE etc you could see how the gaps would be filled in by those):
 <img src="./public/ifdiv.jpg" alt="Home" width="600" height="auto" />
 
 
@@ -179,11 +179,11 @@ Each search retrieves **n** results, with **n** being the limit we impose on the
 
 This engine performs **$(\text{X} \cdot \text{N})$** searches, where:
 - **N** is the number of offset locations. In this case, **N = 4** (N, S, E, W, NW....).
-- **X** is the number of places retrieved at each location which is up to us.
+- **X** is the number of places retrieved at each location which is **n** = (20).
 
 After gathering all places:
-1. **Recursively fetch next pages** for each location until the page limit is reached.
-2. **Remove duplicate places** to avoid redundant results in cases where two offsets overlap.
+1. **Remove duplicate places** to avoid redundant results in cases where two offsets overlap.
+2. **Remove Closed Places (optional)** to filter out places that are closed if the user wants.
 
 ---
 
@@ -264,8 +264,9 @@ New Coordinates:
    - $\text{lngOffset} = \text{latOffset} \times \cos\left(\frac{\text{lat} \times \pi}{180}\right)$
 
 2. **Recursive Searches:**  
-   - At each offset location, search up to **n** pages.
+   - At each offset location, search up to **n** = 20 places.
    - Remove duplicate places.
+   - Remove closed places (optional).
 
 3. **Final Output:**  
    - Return the unique list of places.
@@ -273,8 +274,8 @@ New Coordinates:
 ---
 
 ## Advantages
+- **Larger Data Set:** Ensures we have more than 20 places for the user.
 - **Uniform Place Distribution:** Ensures an equal number of places are retrieved from all over the search radius.
-- **Efficient Coverage:** Reduces the number of pages needed to fetch distant places.
 - **Avoids Overshooting:** Ensures searches do not go outside the user's radius.
 
 ---
