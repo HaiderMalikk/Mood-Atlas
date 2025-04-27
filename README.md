@@ -1,3 +1,4 @@
+<img src="./public/readme_prev.png" alt="Home" width="800" height="auto" />
 <h1 style="border-bottom: none; margin: 0; color:orange">Mood Atlas</h1>
 
 *"Chart your feelings, discover your destination"*
