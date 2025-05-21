@@ -11,7 +11,7 @@
 
 
 ---
-### There is a Version of this app with more technologies like Spring, Flask etc That's unfortunately outdated and not in production, <a href="https://github.com/HaiderMalikk/mood-atlas" style="color: blue;">You Can Check That Out Here</a>
+### There is a Version of this app with more technologies like Spring, Flask etc That's unfortunately outdated and not in production, rather i moved all off that Next.js to have the whole website hosted only on vercel (hence its all in JS) <a href="https://github.com/HaiderMalikk/Mood-Atlas" style="color: blue;">You Can Check That Out Here</a>
 
 ---
 
