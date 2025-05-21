@@ -37,7 +37,7 @@ const Layout = ({ children }) => {
             </div>
             {/* Github on the right */}
             <div style={{ display: 'flex', gap: '20px',}}>
-              <a href="https://github.com/HaiderMalikk/mood-atlas-production_build" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none',}}>
+              <a href="https://github.com/HaiderMalikk/Mood-Atlas" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none',}}>
                 <h1 className="github-header button" style={{ margin: 0, cursor: 'pointer',}}>
                 <Image src={githublogo} alt="Github" style={{ width: '20px', height: '20px', marginTop: '-15px', marginBottom: '-5px', marginRight: '5px'}} />
                   Github</h1>
