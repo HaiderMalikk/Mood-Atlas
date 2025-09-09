@@ -38,6 +38,7 @@ const WelcomePage = () => {
     picture: "",
     reviews: "",
     matchscore: null,
+    coordinates: null,
   });
 
   // State to manage loading icon, initially set to false as we only start on click
@@ -71,7 +72,8 @@ const WelcomePage = () => {
       address: result.address || "No address available",
       picture: result.photoReference || "", // If no photoReference, leave empty to prevent errors as we have a default if empty
       reviews: result.reviews || "No reviews available",
-      matchscore: result.matchpercentage || 0
+      matchscore: result.matchpercentage || 0,
+      coordinates: result.coordinates || null
     });
   
     if (result.coordinates) {
@@ -104,6 +106,7 @@ const WelcomePage = () => {
       picture: "",
       reviews: "",
       matchscore: null,
+      coordinates: null,
     });
     setDone(false); // Reset done state
   };
@@ -226,6 +229,7 @@ const WelcomePage = () => {
           picture={processedData.picture || ""}
           reviews={processedData.reviews}
           matchscore={processedData.matchscore}
+          coordinates={processedData.coordinates}
         />
       </div>
     </div>
