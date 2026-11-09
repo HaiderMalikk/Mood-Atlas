@@ -13,7 +13,7 @@ export default async function handler(req, res) {
     const response = await axios.post(
       url,
       {
-        maxResultCount: 20, // Limit results
+        maxResultCount: 20, // Limit results (20 is the max anyway using a higher number still limits it to 20 per call)
         locationRestriction: {
           circle: {
             center: { latitude: parseFloat(lat), longitude: parseFloat(lng) },
