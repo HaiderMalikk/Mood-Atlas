@@ -13,7 +13,7 @@ export default async function handler(req, res) {
     const response = await axios.post(
       url,
       {
-        maxResultCount: 20, // Limit results
+        maxResultCount: 20, // Limit results (20 is the max anyway using a higher number still limits it to 20 per call)
         locationRestriction: {
           circle: {
             center: { latitude: parseFloat(lat), longitude: parseFloat(lng) },
@@ -22,7 +22,6 @@ export default async function handler(req, res) {
         },
       },
       {
-        // Fix opening hours
         headers: {
           'Content-Type': 'application/json',
           'X-Goog-Api-Key': process.env.MY_SECRET_GOOGLE_MAPS_API_KEY, // Use secure env variable
@@ -33,6 +32,7 @@ export default async function handler(req, res) {
             places.types,
             places.rating,
             places.photos,
+            places.currentOpeningHours
           `.replace(/\s+/g, ''), // Remove extra spaces
         },
       }

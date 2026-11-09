@@ -63,7 +63,7 @@ export async function fetchPlaces(userCoordinates, radius, gonow) {
     if (gonow) {
       console.log("Removing closed places");
       // Filter out places that are not open
-      return places.filter(place => place.opening_hours && place.opening_hours.open_now);
+      return places.filter(place => place.currentOpeningHours?.openNow === true);
     }
     // If gonow is false, return the places as is
     return places;
@@ -151,7 +151,7 @@ export async function fetchPlaces(userCoordinates, radius, gonow) {
   // Remove duplicates before returning
   const uniqueResults = removeDuplicates(allResults);
   // remove closed places
-  const finalResults = uniqueResults;
+  const finalResults = removeclosedplaces(uniqueResults);
 
   console.log(`Finished fetching all places. Total places fetched: ${allResults.length}`);
   console.log(`Total unique places fetched: ${finalResults.length}`);
