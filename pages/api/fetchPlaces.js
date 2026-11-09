@@ -22,7 +22,6 @@ export default async function handler(req, res) {
         },
       },
       {
-        // Fix opening hours
         headers: {
           'Content-Type': 'application/json',
           'X-Goog-Api-Key': process.env.MY_SECRET_GOOGLE_MAPS_API_KEY, // Use secure env variable
@@ -33,6 +32,7 @@ export default async function handler(req, res) {
             places.types,
             places.rating,
             places.photos,
+            places.currentOpeningHours
           `.replace(/\s+/g, ''), // Remove extra spaces
         },
       }

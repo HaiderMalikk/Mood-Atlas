@@ -82,9 +82,9 @@ MOOD-ATLAS/
     "longitude" : -79.3894923
   },
   "types" : [ "hotel", "establishment" ],
-  "opening_hours":
+  "currentOpeningHours":
   {
-    "open_now" : true,
+    "openNow" : true
   }
   "photos" : 
   [
@@ -184,7 +184,7 @@ This engine performs **$(\text{X} \cdot \text{N})$** searches, where:
 
 After gathering all places:
 1. **Remove duplicate places** to avoid redundant results in cases where two offsets overlap.
-2. **Remove Closed Places (optional)** to filter out places that are closed if the user wants.
+2. **Remove Closed Places (optional)** when "go now" is enabled, keep only places with `currentOpeningHours.openNow === true`. Closed places and places with unknown opening hours are excluded. When disabled, opening hours do not affect results. The API requests `places.currentOpeningHours`, which can affect Google Places API billing.
 
 ---
 
@@ -353,4 +353,3 @@ Create And Deploy This Project As A Web App, Giving user free access to the webs
 
 - Vercel dashboard for deployment (first 7 Days!):
 <img src="./public/vercel.png" alt="Home" width="600" height="auto " />
-
